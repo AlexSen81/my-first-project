@@ -3,7 +3,37 @@
 {% block title %}Главная | ЯсеньStudio{% endblock %}
 
 {% block content %}
-    <h2>Добро пожаловать в нашу мастерскую!</h2>
-    <p>Мы создаем уникальные, долговечные и эстетичные изделия из натурального дерева (ясень, дуб, карагач).</p>
-    <p>Каждая вещь в нашей студии делается вручную и с душой.</p>
+    <!-- Приветственный баннер -->
+    <div style="background-color: #efebe9; border-left: 5px solid #5d4037; padding: 30px; border-radius: 4px; margin-bottom: 40px;">
+        <h2 style="color: #3e2723; font-size: 32px; margin-bottom: 15px; font-weight: 700;">Создаем изделия, которые передаются по наследству</h2>
+        <p style="font-size: 18px; color: #4e342e; max-width: 800px; line-height: 1.7;">
+            Добро пожаловать в «ЯсеньStudio»! Мы занимаемся изготовлением игрушек, предметов декора и интерьера из ценных пород дерева: ясеня, дуба и карагача. Каждая вещь в нашей студии создаётся в единственном экземпляре с сохранением уникальной текстуры дерева.
+        </p>
+    </div>
+
+    <!-- Блок преимуществ мастерской -->
+    <h3 style="color: #3e2723; font-size: 24px; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid #efebe9; padding-bottom: 10px;">Почему выбирают нас</h3>
+
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 40px;">
+        <!-- Карточка 1 -->
+        <div style="flex: 1; min-width: 250px; background-color: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
+            <div style="font-size: 30px; margin-bottom: 10px;">🪵</div>
+            <h4 style="color: #3e2723; margin-bottom: 10px; font-weight: 700;">Материалы высшего качества</h4>
+            <p style="color: #666; font-size: 14px;">Используем только тщательно высушенный массив дерева и экологичные масла.</p>
+        </div>
+
+        <!-- Карточка 2 -->
+        <div style="flex: 1; min-width: 250px; background-color: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
+            <div style="font-size: 30px; margin-bottom: 10px;">📐</div>
+            <h4 style="color: #3e2723; margin-bottom: 10px; font-weight: 700;">Индивидуальный подход</h4>
+            <p style="color: #666; font-size: 14px;">Делаем изделия по вашим размерам, эскизам, чертежам или просто по фото.</p>
+        </div>
+
+        <!-- Карточка 3 -->
+        <div style="flex: 1; min-width: 250px; background-color: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
+            <div style="font-size: 30px; margin-bottom: 10px;">🖐️</div>
+            <h4 style="color: #3e2723; margin-bottom: 10px; font-weight: 700;">Ручная работа</h4>
+            <p style="color: #666; font-size: 14px;">Внимание к каждой детали — от шлифовки до финального покрытия воском.</p>
+        </div>
+    </div>
 {% endblock %}
