@@ -3,12 +3,78 @@
 {% block title %}Контакты | ЯсеньStudio{% endblock %}
 
 {% block content %}
-    <h2>Наши контакты</h2>
-    <p>Мастерская «ЯсеньStudio» находится в г. Зеленоград.</p>
-    <ul>
-        <li><strong>Телефон:</strong> +7 (999) 000-00-00</li>
-        <li><strong>Email:</strong> smolgrand@.ru</li>
-        <li><strong>Часы работы:</strong> Пн-Пт с 9:00 до 18:00</li>
-    </ul>
-    <p>Вы всегда можетен написать нам, чтобы посмотреть обсудить ваш индивидуальный проект!</p>
+    <h2 style="color: #3e2723; font-size: 32px; font-weight: 700; margin-bottom: 10px;">Связаться с нами</h2>
+    <p style="color: #666; margin-bottom: 30px; font-size: 16px;">У вас есть идея для проекта или хотите обсудить заказ? Мы всегда на связи!</p>
+
+    <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+
+        <!-- Левый block: Основная информация -->
+        <div style="flex: 1; min-width: 300px; background-color: #ffffff; padding: 30px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
+
+            <div style="display: flex; align-items: center; margin-bottom: 20px; gap: 15px;">
+                <div style="font-size: 24px; background-color: #efebe9; padding: 10px; border-radius: 50%;">📞</div>
+                <div>
+                    <h4 style="margin: 0; color: #3e2723; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Телефон</h4>
+                    <p style="margin: 0; font-size: 16px; font-weight: 500;">+7 (999) 000-00-00</p>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-bottom: 20px; gap: 15px;">
+                <div style="font-size: 24px; background-color: #efebe9; padding: 10px; border-radius: 50%;">✉️</div>
+                <div>
+                    <h4 style="margin: 0; color: #3e2723; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Email</h4>
+                    <p style="margin: 0; font-size: 16px; font-weight: 500;">info@yasenstudio.ru</p>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="font-size: 24px; background-color: #efebe9; padding: 10px; border-radius: 50%;">📍</div>
+                <div>
+                    <h4 style="margin: 0; color: #3e2723; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Мастерская</h4>
+                    <p style="margin: 0; font-size: 16px; font-weight: 500;">г. Москва, ул. Лесная, д. 5</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Правый блок: Режим работы и Мессенджеры -->
+        <div style="flex: 1; min-width: 300px; background-color: #3e2723; color: #ffffff; padding: 30px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: space-between;">
+
+            <div>
+                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 15px;">🕒 Режим работы</h3>
+                <p style="opacity: 0.9; margin-bottom: 10px; font-size: 16px;">Понедельник — Пятница: <strong>с 9:00 до 18:00</strong></p>
+                <p style="opacity: 0.9; margin-bottom: 25px; font-size: 16px;">Суббота: по предварительной договорённости</p>
+            </div>
+
+            <!-- Блок мессенджеров -->
+            <div style="margin-bottom: 25px;">
+                <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">Напишите нам в мессенджеры:</h4>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+
+                    <!-- Кнопка Telegram -->
+                    <a href="https://t.me" target="_blank" style="display: inline-flex; align-items: center; gap: 10px; background-color: #24A1DE; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: 500; font-size: 15px; transition: opacity 0.3s;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                            <path d="M11.944 0C5.344 0 0 5.344 0 11.944C0 18.544 5.344 23.888 11.944 23.888C18.544 23.888 23.888 18.544 23.888 11.944C23.888 5.344 18.544 0 11.944 0ZM18.152 8.168L16.088 17.912C15.936 18.6 15.52 18.768 14.944 18.44L11.8 16.128L10.28 17.592C10.112 17.76 9.976 17.904 9.656 17.904L9.88 14.728L15.664 9.504C15.912 9.28 15.616 9.16 15.288 9.376L8.144 13.872L5.072 12.912C4.408 12.704 4.392 12.248 5.216 11.928L17.224 7.296C17.784 7.088 18.272 7.424 18.152 8.168Z" fill="white"/>
+                        </svg>
+                        Telegram
+                    </a>
+
+                    <!-- Кнопка WhatsApp -->
+                    <a href="https://wa.me" target="_blank" style="display: inline-flex; align-items: center; gap: 10px; background-color: #25D366; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: 500; font-size: 15px; transition: opacity 0.3s;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                            <path d="M12.004 0C5.374 0 0 5.374 0 12.004C0 14.542 0.79 16.901 2.138 18.847L0.347 24L5.641 22.614C7.472 23.614 9.579 24.004 12.005 24.004C18.635 24.004 24 18.63 24 12.004C24 5.374 18.634 0 12.004 0ZM18.221 16.923C17.967 17.639 16.938 18.22 16.147 18.388C15.612 18.502 14.912 18.591 12.553 17.613C9.539 16.365 7.595 13.298 7.443 13.095C7.294 12.894 6.186 11.42 6.186 9.896C6.186 8.371 6.962 7.625 7.266 7.318C7.518 7.064 7.935 6.945 8.337 6.945C8.468 6.945 8.587 6.951 8.694 6.956C8.999 6.97 9.151 6.988 9.353 7.473C9.606 8.083 10.222 9.589 10.298 9.743C10.374 9.897 10.45 10.101 10.349 10.304C10.249 10.509 10.163 10.596 10.01 10.774C9.859 10.95 9.719 11.089 9.567 11.272C9.426 11.439 9.266 11.619 9.453 11.94C10.612 13.916 11.833 14.887 13.568 15.626C13.8 15.725 14.004 15.733 14.182 15.526C14.412 15.258 14.694 14.862 14.982 14.457C15.185 14.17 15.437 14.133 15.703 14.232C15.972 14.33 17.409 15.039 17.702 15.187C17.994 15.334 18.19 15.405 18.261 15.529C18.332 15.653 18.332 16.207 18.221 16.923Z" fill="white"/>
+                        </svg>
+                        WhatsApp
+                    </a>
+
+                </div>
+            </div>
+
+            <hr style="border-top: 1px solid rgba(255,255,255,0.2); margin-bottom: 15px; margin-top: 0;">
+            <p style="font-size: 13px; opacity: 0.7; line-height: 1.5; margin: 0;">
+                * Кликните на мессенджер, чтобы сразу начать диалог с мастером.
+            </p>
+        </div>
+
+    </div>
 {% endblock %}
