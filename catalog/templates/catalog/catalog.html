@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Каталог | ЯсеньStudio{% endblock %}
+
+{% block content %}
+    <h2 style="color: #3e2723; font-size: 32px; font-weight: 700; margin-bottom: 10px;">Каталог изделий</h2>
+    <p style="color: #666; margin-bottom: 30px; font-size: 16px;">Все изделия создаются вручную из отборного массива дерева. Возможно изготовление по вашим размерам.</p>
+
+    <!-- Сетка для карточек товаров -->
+    <div style="display: flex; gap: 25px; flex-wrap: wrap;">
+        
+        {% for product in products %}
+            <!-- Карточка товара -->
+            <div style="flex: 1; min-width: 280px; max-width: 350px; background-color: #ffffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
+                
+                <!-- Заглушка для будущего фото -->
+                <div style="background-color: #efebe9; height: 180px; display: flex; align-items: center; justify-content: center; color: #8d6e63; font-size: 40px;">
+                    🪵
+                </div>
+
+                <!-- Контент карточки -->
+                <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="color: #3e2723; font-size: 20px; font-weight: 700; margin-bottom: 10px;">{{ product.title }}</h3>
+                        <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">{{ product.description }}</p>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #efebe9; padding-top: 15px;">
+                        <span style="font-size: 18px; font-weight: 700; color: #5d4037;">{{ product.price }} руб.</span>
+                        <a href="{% url 'contacts' %}" style="background-color: #3e2723; color: white; text-decoration: none; padding: 8px 14px; border-radius: 4px; font-size: 13px; font-weight: 500; transition: opacity 0.3s;">Заказать</a>
+                    </div>
+                </div>
+
+            </div>
+        {% empty %}
+            <!-- Если товаров вдруг нет в базе -->
+            <p style="color: #666; font-style: italic;">Каталог временно пуст. Мы уже готовим новые изделия!</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}

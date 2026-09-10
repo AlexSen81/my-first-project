@@ -6,12 +6,9 @@
     <title>{% block title %}ЯсеньStudio{% endblock %}</title>
 
     <!-- Подключаем стильный шрифт Montserrat -->
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cloudflare.com">
-
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         /* Общие настройки сайта */
@@ -109,7 +106,7 @@
             <a class="logo" href="{% url 'index' %}">🌳 ЯсеньStudio</a>
             <nav>
                 <a href="{% url 'index' %}">Главная</a>
-                <a href="#" style="opacity: 0.6; pointer-events: none;">Каталог</a>
+                <a href="{% url 'catalog' %}">Каталог</a> <!-- Здесь оживили ссылку! -->
                 <a href="{% url 'contacts' %}">Контакты</a>
             </nav>
         </div>
