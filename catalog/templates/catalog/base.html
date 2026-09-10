@@ -10,10 +10,11 @@
     <header style="background-color: #3e2723; color: white; padding: 20px; text-align: center;">
         <h1>🌳 Мастерская «ЯсеньStudio»</h1>
         <nav>
-            <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Главная</a>
+            <a href="{% url 'index' %}" style="color: white; margin: 0 10px; text-decoration: none;">Главная</a>
             <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Каталог</a>
-            <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Контакты</a>
+            <a href="{% url 'contacts' %}" style="color: white; margin: 0 10px; text-decoration: none;">Контакты</a>
         </nav>
+
     </header>
 
     <main style="padding: 20px; min-height: 400px;">
