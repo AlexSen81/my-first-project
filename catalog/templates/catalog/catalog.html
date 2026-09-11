@@ -13,7 +13,7 @@
             <!-- Карточка товара -->
             <div style="flex: 1; min-width: 280px; max-width: 350px; background-color: #ffffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
 
-                <!-- Обернули блок с фото в ссылку на детальную страницу -->
+                <!-- Ссылка на детальную страницу по клику на фото -->
                 <a href="{% url 'product_detail' pk=product.pk %}" style="display: block; text-decoration: none;">
                     <!-- Фотография изделия -->
                     {% if product.image %}
@@ -26,11 +26,10 @@
                     {% endif %}
                 </a>
 
-
                 <!-- Контент карточки -->
                 <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
-                        <!-- Обернули название в ссылку на детальную страницу -->
+                        <!-- Название изделия со ссылкой -->
                         <h3 style="margin-bottom: 10px;">
                             <a href="{% url 'product_detail' pk=product.pk %}" style="color: #3e2723; font-size: 20px; font-weight: 700; text-decoration: none;">
                                 {{ product.title }}
@@ -39,9 +38,12 @@
                         <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">{{ product.description }}</p>
                     </div>
 
+                    <!-- Нижняя часть карточки с ценой и кнопкой -->
                     <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #efebe9; padding-top: 15px;">
-                        <span style="font-size: 18px; font-weight: 700; color: #5d4037;">{{ product.price }} руб.</span>
-                        <a href="{% url 'contacts' %}" style="background-color: #3e2723; color: white; text-decoration: none; padding: 8px 14px; border-radius: 4px; font-size: 13px; font-weight: 500; transition: opacity 0.3s;">Заказать</a>
+                        <span style="font-size: 16px; font-weight: 700; color: #5d4037;">{{ product.price }} руб.</span>
+                        <a href="{% url 'cart_add' product.id %}" style="background-color: #3e2723; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 13px; font-weight: 600; transition: opacity 0.3s;">
+                            В корзину
+                        </a>
                     </div>
                 </div>
 
@@ -53,3 +55,4 @@
 
     </div>
 {% endblock %}
+

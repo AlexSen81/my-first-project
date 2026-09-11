@@ -6,9 +6,9 @@
     <title>{% block title %}ЯсеньStudio{% endblock %}</title>
 
     <!-- Подключаем стильный шрифт Montserrat -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         /* Общие настройки сайта */
@@ -38,28 +38,46 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 15px 20px;
         }
         .logo {
             color: #ffffff;
             font-size: 24px;
             font-weight: 700;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Меню навигации — Кнопки теперь чёткие и белые */
+        /* Меню навигации */
+        nav {
+            display: flex;
+            align-items: center;
+        }
         nav a {
             color: #ffffff;
             text-decoration: none;
-            margin-left: 20px;
+            margin-left: 15px;
             font-weight: 500;
-            font-size: 16px;
-            padding: 8px 16px;
+            font-size: 15px;
+            padding: 8px 14px;
             border-radius: 4px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, opacity 0.3s;
         }
         nav a:hover {
-            background-color: rgba(255, 255, 255, 0.15); /* Подсветка при наведении */
+            background-color: rgba(255, 255, 255, 0.1); /* Подсветка обычных ссылок */
+        }
+
+        /* Стильная кнопка Корзины */
+        nav a.cart-btn {
+            background-color: #5d4037;
+            font-weight: 600;
+            margin-left: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        nav a.cart-btn:hover {
+            background-color: #6d4c41;
         }
 
         /* Основной контент с хорошими отступами от краёв */
@@ -79,22 +97,30 @@
             font-size: 14px;
             color: #6d645e;
             border-top: 1px solid #e1dbd5;
+            margin-top: auto;
         }
 
         /* Стили для адаптивности под смартфоны */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
             }
-            nav a {
-                margin: 0 5px;
-                padding: 6px 10px;
-                font-size: 14px;
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 5px;
             }
-            main {
-                margin: 20px auto;
+            nav a {
+                margin-left: 0;
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+            nav a.cart-btn {
+                margin-left: 0;
+                margin-top: 5px;
+                width: 100%;
             }
         }
     </style>
@@ -106,8 +132,9 @@
             <a class="logo" href="{% url 'index' %}">🌳 ЯсеньStudio</a>
             <nav>
                 <a href="{% url 'index' %}">Главная</a>
-                <a href="{% url 'catalog' %}">Каталог</a> <!-- Здесь оживили ссылку! -->
+                <a href="{% url 'catalog' %}">Каталог</a>
                 <a href="{% url 'contacts' %}">Контакты</a>
+                <a href="{% url 'cart_detail' %}" class="cart-btn">🛒 Корзина</a>
             </nav>
         </div>
     </header>

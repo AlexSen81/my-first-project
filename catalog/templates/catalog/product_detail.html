@@ -1,6 +1,6 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}{{ product.title }} | ЯсеньStudio{% endblock %}
+{% block title %}Купить {{ product.title }} | ЯсеньStudio{% endblock %}
 
 {% block content %}
     <!-- Ссылка Вернуться назад -->
@@ -9,7 +9,7 @@
     </div>
 
     <div style="display: flex; gap: 40px; flex-wrap: wrap;">
-        
+
         <!-- Левая колонка: Большое фото -->
         <div style="flex: 1.2; min-width: 300px;">
             {% if product.image %}
@@ -26,18 +26,23 @@
             <div>
                 <h1 style="color: #3e2723; font-size: 36px; font-weight: 700; margin-bottom: 15px; line-height: 1.2;">{{ product.title }}</h1>
                 <div style="font-size: 24px; font-weight: 700; color: #5d4037; margin-bottom: 25px;">{{ product.price }} руб.</div>
-                
+
                 <h3 style="color: #3e2723; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 700;">Описание изделия:</h3>
                 <p style="color: #555; font-size: 16px; line-height: 1.7; margin-bottom: 30px; white-space: pre-line;">{{ product.description }}</p>
             </div>
 
             <!-- Блок заказа -->
             <div style="background-color: #efebe9; padding: 25px; border-radius: 6px; border-left: 4px solid #3e2723;">
-                <h4 style="color: #3e2723; font-size: 18px; font-weight: 700; margin-bottom: 10px;">Понравилось изделие?</h4>
-                <p style="color: #5d4037; font-size: 14px; margin-bottom: 15px;">Нажмите на кнопку ниже, чтобы обсудить заказ, размеры или доставку напрямую с мастером в Telegram.</p>
-                
+                <h4 style="color: #3e2723; font-size: 18px; font-weight: 700; margin-bottom: 15px;">Оформить заказ</h4>
+
+                <!-- Добавление в корзину -->
+                <a href="{% url 'cart_add' product.id %}" style="display: inline-flex; align-items: center; background-color: #5d4037; color: white; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-weight: 600; font-size: 15px; margin-bottom: 12px; transition: background-color 0.3s;">
+                    🛒 Добавить в корзину
+                </a>
+                <br>
+                <!-- Обсуждение напрямую -->
                 <a href="https://t.me" target="_blank" style="display: inline-flex; align-items: center; gap: 10px; background-color: #3e2723; color: white; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-weight: 500; font-size: 15px; transition: background-color 0.3s;">
-                    Обсудить заказ в Telegram
+                    Обсудить в Telegram
                 </a>
             </div>
         </div>

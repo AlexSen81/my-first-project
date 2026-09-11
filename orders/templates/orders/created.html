@@ -1,0 +1,14 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Заказ принят | ЯсеньStudio{% endblock %}
+
+{% block content %}
+    <div style="text-align: center; padding: 40px 20px; background-color: #ffffff; border-radius: 6px; border: 1px solid #eae6e1; max-width: 600px; margin: 0 auto;">
+        <div style="font-size: 50px; margin-bottom: 20px;">🎉</div>
+        <h2 style="color: #3e2723; font-size: 28px; font-weight: 700; margin-bottom: 15px;">Заказ № {{ order.id }} успешно создан!</h2>
+        <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+            Спасибо за ваш выбор! На следующем шаге мы подключим СБП от Т-Банка, чтобы вы могли моментально оплатить изделие.
+        </p>
+        <a href="{% url 'catalog' %}" style="display: inline-block; background-color: #3e2723; color: white; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-weight: 500;">Вернуться в каталог</a>
+    </div>
+{% endblock %}

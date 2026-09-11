@@ -1,0 +1,60 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Корзина | ЯсеньStudio{% endblock %}
+
+{% block content %}
+    <h2 style="color: #3e2723; font-size: 32px; font-weight: 700; margin-bottom: 25px;">Ваша корзина</h2>
+
+    {% if cart %}
+        <div style="background-color: #ffffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1; overflow: hidden; margin-bottom: 30px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #efebe9; color: #3e2723; font-weight: 700; border-bottom: 1px solid #eae6e1;">
+                        <th style="padding: 15px 20px;">Изделие</th>
+                        <th style="padding: 15px 20px;">Количество</th>
+                        <th style="padding: 15px 20px;">Цена</th>
+                        <th style="padding: 15px 20px;">Сумма</th>
+                        <th style="padding: 15px 20px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                        {% with product=item.product %}
+                            <tr style="border-bottom: 1px solid #efebe9;">
+                                <td style="padding: 15px 20px; font-weight: 600; color: #3e2723;">
+                                    <a href="{% url 'product_detail' pk=product.pk %}" style="color: #3e2723; text-decoration: none;">
+                                        {{ product.title }}
+                                    </a>
+                                </td>
+                                <td style="padding: 15px 20px;">{{ item.quantity }} шт.</td>
+                                <td style="padding: 15px 20px; color: #666;">{{ item.price }} руб.</td>
+                                <td style="padding: 15px 20px; font-weight: 600; color: #5d4037;">{{ item.total_price }} руб.</td>
+                                <td style="padding: 15px 20px; text-align: right;">
+                                    <a href="{% url 'cart_remove' product.id %}" style="color: #c62828; text-decoration: none; font-size: 14px; font-weight: 500;">Удалить</a>
+                                </td>
+                            </tr>
+                        {% endwith %}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Итоговая сумма -->
+            <div style="padding: 20px; text-align: right; background-color: #fbf9f6; border-top: 1px solid #eae6e1;">
+                <span style="font-size: 20px; font-weight: 700; color: #3e2723; margin-right: 20px;">Итого: {{ cart.get_total_price }} руб.</span>
+            </div>
+        </div>
+
+        <!-- Кнопка оформления -->
+        <div style="text-align: right;">
+            <a href="/orders/create/" style="display: inline-block; background-color: #3e2723; color: white; text-decoration: none; padding: 12px 28px; border-radius: 4px; font-weight: 600; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    Перейти к оформлению заказа
+</a>
+
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px 20px; background-color: #ffffff; border-radius: 6px; border: 1px solid #eae6e1;">
+            <p style="color: #666; font-size: 18px; margin-bottom: 20px;">В вашей корзине пока ничего нет.</p>
+            <a href="{% url 'catalog' %}" style="display: inline-block; background-color: #3e2723; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: 500;">Перейти в каталог</a>
+        </div>
+    {% endif %}
+{% endblock %}

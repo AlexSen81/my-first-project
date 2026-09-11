@@ -1,0 +1,11 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+    <div style="text-align: center; padding: 40px 20px; background-color: #ffffff; border-radius: 6px; border: 1px solid #eae6e1; max-width: 600px; margin: 0 auto;">
+        <div style="font-size: 50px; margin-bottom: 20px;">❌</div>
+        <h2 style="color: #c62828; font-size: 28px; font-weight: 700; margin-bottom: 15px;">Ошибка при оплате</h2>
+        <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+            Что-то пошло не так, и банк отклонил транзакцию. Пожалуйста, попробуйте оформить заказ заново или свяжитесь с нами в мессенджерах.
+        </p>
+        <a href="{% url 'cart_detail' %}" style="display: inline-block; background-color: #3e2723; color: white; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-weight: 500;">Вернуться в корзину</a>
+    </div>
+{% endblock %}

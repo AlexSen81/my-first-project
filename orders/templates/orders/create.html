@@ -1,0 +1,50 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Оформление заказа | ЯсеньStudio{% endblock %}
+
+{% block content %}
+    <h2 style="color: #3e2723; font-size: 32px; font-weight: 700; margin-bottom: 25px;">Оформление заказа</h2>
+
+    <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+        
+        <!-- Левая колонка: Форма -->
+        <div style="flex: 1.2; min-width: 300px; background-color: #ffffff; padding: 30px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
+            <h3 style="color: #3e2723; font-size: 20px; font-weight: 700; margin-bottom: 20px;">Ваши данные</h3>
+            
+            <form action="." method="post" novalidate>
+                {% csrf_token %}
+                
+                <label style="display: block; font-weight: 600; color: #5d4037; margin-bottom: 8px;">Ваше имя:</label>
+                {{ form.first_name }}
+                
+                <label style="display: block; font-weight: 600; color: #5d4037; margin-bottom: 8px;">Номер телефона (для СБП):</label>
+                {{ form.phone }}
+                
+                <button type="submit" style="width: 100%; background-color: #3e2723; color: white; border: none; padding: 14px; border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.3s;">
+                    Перейти к оплате по СБП
+                </button>
+            </form>
+        </div>
+
+        <!-- Правая колонка: Сводка по корзине -->
+        <div style="flex: 1; min-width: 300px; background-color: #efebe9; padding: 30px; border-radius: 6px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="color: #3e2723; font-size: 20px; font-weight: 700; margin-bottom: 20px;">Ваш заказ</h3>
+                <ul style="list-style: none; padding: 0; margin-bottom: 20px;">
+                    {% for item in cart %}
+                        <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 15px;">
+                            <span>{{ item.product.title }} x {{ item.quantity }}</span>
+                            <span style="font-weight: 600; color: #5d4037;">{{ item.total_price }} руб.</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div style="border-top: 2px solid #3e2723; padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 18px; font-weight: 700; color: #3e2723;">Итого к оплате:</span>
+                <span style="font-size: 22px; font-weight: 700; color: #5d4037;">{{ cart.get_total_price }} руб.</span>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

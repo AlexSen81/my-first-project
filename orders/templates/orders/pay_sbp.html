@@ -1,0 +1,31 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Оплата по СБП | ЯсеньStudio{% endblock %}
+
+{% block content %}
+    <div style="text-align: center; padding: 40px 20px; background-color: #ffffff; border-radius: 6px; border: 1px solid #eae6e1; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        
+        <!-- Логотип СБП -->
+        <div style="background-color: #1a237e; color: white; padding: 10px; border-radius: 4px; display: inline-block; font-weight: 700; font-size: 18px; margin-bottom: 25px; letter-spacing: 1px;">
+            📲 СБП • ОПЛАТА
+        </div>
+        
+        <h2 style="color: #3e2723; font-size: 24px; font-weight: 700; margin-bottom: 10px;">Заказ № {{ order.id }}</h2>
+        <div style="font-size: 22px; font-weight: 700; color: #5d4037; margin-bottom: 25px;">Сумма: {{ total_price }} руб.</div>
+        
+        <!-- Генерация красивой рамки для QR-кода -->
+        <div style="border: 2px dashed #3e2723; padding: 15px; display: inline-block; background-color: #fbf9f6; border-radius: 6px; margin-bottom: 25px;">
+            <!-- Вставляем демонстрационный QR-код -->
+            <img src="https://qrserver.com" alt="QR СБП" style="width: 200px; height: 200px; display: block;">
+        </div>
+        
+        <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 30px; padding: 0 20px;">
+            Откройте приложение вашего банка, выберите «Оплата по QR-коду» и отсканируйте изображение выше.
+        </p>
+
+        <!-- Симуляция подтверждения оплаты -->
+        <a href="{% url 'payment_success' order.id %}" style="display: block; background-color: #25D366; color: white; text-decoration: none; padding: 14px; border-radius: 4px; font-weight: 600; font-size: 16px; transition: background-color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            Я оплатил, подтвердить платеж
+        </a>
+    </div>
+{% endblock %}
