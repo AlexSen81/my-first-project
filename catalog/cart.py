@@ -13,12 +13,18 @@ class Cart:
             cart = self.session['cart'] = {}
         self.cart = cart
 
-    def add(self, product, quantity=1):
-        # Добавляем товар в корзину или увеличиваем его количество
+    def add(self, product, quantity=1, override_quantity=False):
+        # Добавляем товар в корзину или обновляем его количество
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
-        self.cart[product_id]['quantity'] += quantity
+
+        if override_quantity:
+            # Если override_quantity=True, мы перезаписываем количество
+            self.cart[product_id]['quantity'] = quantity
+        else:
+            # Иначе — просто прибавляем (как было раньше)
+            self.cart[product_id]['quantity'] += quantity
         self.save()
 
     def remove(self, product):

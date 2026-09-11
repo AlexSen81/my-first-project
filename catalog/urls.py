@@ -11,4 +11,6 @@ urlpatterns = [
     path('cart/', views.cart_detail, name='cart_detail'),
     path('cart/add/<int:product_id>/', views.cart_add, name='cart_add'),
     path('cart/remove/<int:product_id>/', views.cart_remove, name='cart_remove'),
+# Новая ссылка для мгновенного обновления:
+    path('cart/update-ajax/<int:product_id>/', views.cart_update_ajax, name='cart_update_ajax'),
 ]
