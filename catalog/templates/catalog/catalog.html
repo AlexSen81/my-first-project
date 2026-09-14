@@ -1,58 +1,86 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}Каталог | ЯсеньStudio{% endblock %}
+{% block title %}Каталог изделий | ЯсеньStudio{% endblock %}
 
 {% block content %}
-    <h2 style="color: #3e2723; font-size: 32px; font-weight: 700; margin-bottom: 10px;">Каталог изделий</h2>
-    <p style="color: #666; margin-bottom: 30px; font-size: 16px;">Все изделия создаются вручную из отборного массива дерева. Возможно изготовление по вашим размерам.</p>
+<div style="margin-top: 30px; margin-bottom: 60px;">
 
-    <!-- Сетка для карточек товаров -->
-    <div style="display: flex; gap: 25px; flex-wrap: wrap;">
+    <!-- Динамический заголовок страницы -->
+    <div style="margin-bottom: 40px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 20px;">
+        <h1 style="font-size: 32px; font-weight: 500; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">
+            {% if selected_category %}
+                {{ selected_category.name }}
+            {% else %}
+                Полный каталог изделий
+            {% endif %}
+        </h1>
+        <p style="font-size: 14px; color: #888; font-weight: 300; margin-top: 5px;">
+            Авторские работы из массива ценных пород дерева ручной работы
+        </p>
+    </div>
 
-        {% for product in products %}
-            <!-- Карточка товара -->
-            <div style="flex: 1; min-width: 280px; max-width: 350px; background-color: #ffffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
+    <!-- СЕТКА ТОВАРОВ -->
+    {% if products %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+            {% for product in products %}
+                <div class="product-card" style="background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: column; height: 100%; transition: transform 0.3s ease, box-shadow 0.3s ease;">
 
-                <!-- Ссылка на детальную страницу по клику на фото -->
-                <a href="{% url 'product_detail' pk=product.pk %}" style="display: block; text-decoration: none;">
-                    <!-- Фотография изделия -->
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; height: 200px; object-fit: cover;">
-                    {% else %}
-                        <!-- Заглушка, если фото не загружено -->
-                        <div style="background-color: #efebe9; height: 200px; display: flex; align-items: center; justify-content: center; color: #8d6e63; font-size: 40px;">
-                            🪵
-                        </div>
-                    {% endif %}
-                </a>
+                    <!-- Область фотографии товара (Кликабельная) -->
+                    <a href="{% url 'product_detail' product.id %}" style="display: block; height: 280px; background-color: #F2EDE6; overflow: hidden; position: relative;">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        {% else %}
+                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #A09B95; font-size: 40px;">🪵</div>
+                        {% endif %}
+                    </a>
 
-                <!-- Контент карточки -->
-                <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <!-- Название изделия со ссылкой -->
-                        <h3 style="margin-bottom: 10px;">
-                            <a href="{% url 'product_detail' pk=product.pk %}" style="color: #3e2723; font-size: 20px; font-weight: 700; text-decoration: none;">
-                                {{ product.title }}
-                            </a>
+                    <!-- Текстовое описание товара -->
+                    <div style="padding: 25px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #8D8781; font-weight: 600; margin-bottom: 8px;">
+                            {{ product.category.name }}
+                        </span>
+
+                        <!-- Название товара (Кликабельное) -->
+                        <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; line-height: 1.4;">
+                            <a href="{% url 'product_detail' product.id %}" style="color: #1A1A1A; text-decoration: none;">{{ product.name }}</a>
                         </h3>
-                        <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">{{ product.description }}</p>
-                    </div>
+                        <p style="font-size: 13px; color: #666; font-weight: 300; line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">
+                            {{ product.description|truncatewords:20 }}
+                        </p>
 
-                    <!-- Нижняя часть карточки с ценой и кнопкой -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #efebe9; padding-top: 15px;">
-                        <span style="font-size: 16px; font-weight: 700; color: #5d4037;">{{ product.price }} руб.</span>
-                        <a href="{% url 'cart_add' product.id %}" style="background-color: #3e2723; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 13px; font-weight: 600; transition: opacity 0.3s;">
-                            В корзину
-                        </a>
+                        <!-- Блок цены и кнопки покупки -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; margin-top: auto;">
+                            <div>
+                                <span style="font-size: 11px; color: #999; text-transform: uppercase; display: block; font-weight: 500; margin-bottom: 2px;">Цена</span>
+                                <span style="font-size: 20px; font-weight: 600; color: #1A1A1A;">{{ product.price }} ₽</span>
+                            </div>
+
+                            <a href="{% url 'product_detail' product.id %}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 22px; border-radius: 25px; font-size: 13px; font-weight: 500; transition: background-color 0.2s;">
+                                Открыть
+                            </a>
+                        </div>
                     </div>
                 </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Если в категории пока нет товаров -->
+        <div style="text-align: center; padding: 80px 20px; background-color: #FFFFFF; border-radius: 16px; border: 1px solid rgba(0,0,0,0.03);">
+            <div style="font-size: 50px; margin-bottom: 20px;">📦</div>
+            <h3 style="font-size: 20px; font-weight: 500; color: #1A1A1A; margin-bottom: 10px;">В этой категории пока нет изделий</h3>
+            <p style="font-size: 14px; color: #777; font-weight: 300; margin-bottom: 25px;">Мы прямо сейчас работаем в мастерской над созданием новых шедевров.</p>
+            <a href="{% url 'catalog' %}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 30px; border-radius: 20px; font-size: 13px;">Вернуться в общий каталог</a>
+        </div>
+    {% endif %}
+</div>
 
-            </div>
-        {% empty %}
-            <!-- Если товаров вдруг нет в базе -->
-            <p style="color: #666; font-style: italic;">Каталог временно пуст. Мы уже готовим новые изделия!</p>
-        {% endfor %}
-
-    </div>
+<style>
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    }
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.07) !important;
+    }
+</style>
 {% endblock %}
-

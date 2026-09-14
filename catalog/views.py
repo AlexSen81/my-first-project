@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product
+from .models import Product, Category
 from .cart import Cart
-from .forms import CartAddProductForm  # Импортируем нашу форму количества
+from .forms import CartAddProductForm  # Твоя форма количества
 
 
 def index(request):
@@ -13,19 +13,41 @@ def contacts(request):
     return render(request, 'catalog/contacts.html')
 
 
+# ИСПРАВЛЕННЫЙ КАТАЛОГ С УМНОЙ ФИЛЬТРАЦИЕЙ ПО КАТЕГОРИЯМ
 def catalog_view(request):
-    products = Product.objects.all()
-    return render(request, 'catalog/catalog.html', {'products': products})
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        # Если кликнули по категории (например, decor), фильтруем товары
+        category = get_object_or_404(Category, slug=category_slug)
+        products = Product.objects.filter(category=category, is_active=True)
+    else:
+        # Иначе показываем все товары мастерской
+        products = Product.objects.filter(is_active=True)
+        category = None
+
+    context = {
+        'products': products,
+        'selected_category': category,
+        'categories': Category.objects.all()
+    }
+    return render(request, 'catalog/catalog.html', context)
 
 
+# ИСПРАВЛЕННАЯ СТРАНИЦА ТОВАРА С ПОДДЕРЖКОЙ ФОРМЫ КОЛИЧЕСТВА И ГАЛЕРЕИ
 def product_detail_view(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    # Передаем форму на детальную страницу, чтобы там тоже можно было выбрать количество перед добавлением
+    product = get_object_or_404(Product, pk=pk, is_active=True)
+    # Передаем форму на детальную страницу, чтобы можно было выбрать количество
     cart_product_form = CartAddProductForm()
-    return render(request, 'catalog/product_detail.html', {'product': product, 'cart_product_form': cart_product_form})
+
+    context = {
+        'product': product,
+        'cart_product_form': cart_product_form
+    }
+    return render(request, 'catalog/product_detail.html', context)
 
 
-# Обновленная функция добавления/обновления количества
+# ДОБАВЛЕНИЕ/ОБНОВЛЕНИЕ ТОВАРА ИЗ ЛЮБОГО МЕСТА
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
@@ -33,15 +55,15 @@ def cart_add(request, product_id):
 
     if form.is_valid():
         cd = form.cleaned_data
-        # Передаем выбранное количество и флаг перезаписи
         cart.add(product=product, quantity=cd['quantity'], override_quantity=cd['override'])
     else:
-        # Если форма не отправлялась (кликнули из каталога), просто добавляем +1
+        # Если кликнули «В корзину» прямо из плитки каталога (без отправки формы), добавляем +1
         cart.add(product=product, quantity=1, override_quantity=False)
 
     return redirect('cart_detail')
 
 
+# ПОЛНОЕ УДАЛЕНИЕ ИЗ КОРЗИНЫ
 def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
@@ -49,19 +71,18 @@ def cart_remove(request, product_id):
     return redirect('cart_detail')
 
 
-# Обновленная страница корзины
+# СТРАНИЦА ОТОБРАЖЕНИЯ КОРЗИНЫ С ИНИЦИАЛИЗАЦИЕЙ ФОРМ ДЛЯ КАЖДОГО ТОВАРА
 def cart_detail(request):
     cart = Cart(request)
-    # Для каждого товара в корзине создаем свою форму с уже выбранным количеством
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(initial={
             'quantity': item['quantity'],
-            'override': True  # Указываем, что это изменение количества изнутри корзины
+            'override': True  # Изменение количества изнутри корзины
         })
-    return render(request, 'catalog/cart_detail.html', {'cart': cart})
+    return render(request, 'catalog/cart.html', {'cart': cart})
 
 
-# Новая функция для мгновенного изменения количества через кнопки + и -
+# РОДНАЯ СТРОГАЯ ЛОГИКА ОБНОВЛЕНИЯ ЧЕРЕЗ AJAX ПО КЛИКУ НА ПЛЮС И МИНУС
 def cart_update_ajax(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
@@ -73,14 +94,17 @@ def cart_update_ajax(request, product_id):
     current_quantity = cart.cart.get(product_id_str, {}).get('quantity', 0)
 
     if action == 'plus':
-        if current_quantity < 20:  # Ограничим максимум 20 шт.
+        if current_quantity < 20:  # Ограничение 20 шт. на набор
             cart.add(product=product, quantity=1, override_quantity=False)
     elif action == 'minus':
         if current_quantity > 1:
             cart.add(product=product, quantity=-1, override_quantity=False)
         elif current_quantity == 1:
-            cart.remove(product)  # Если уменьшили до 0, удаляем товар
-            return JsonResponse({'removed': True})
+            cart.remove(product)  # Если уменьшили до 0, полностью удаляем товар
+            return JsonResponse({
+                'removed': True,
+                'cart_total_price': f"{float(cart.get_total_price()):.2f} руб."
+            })
 
     # Пересчитываем новые суммы
     item_quantity = cart.cart.get(product_id_str, {}).get('quantity', 0)

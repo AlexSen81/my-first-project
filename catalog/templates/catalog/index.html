@@ -1,39 +1,106 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}Главная | ЯсеньStudio{% endblock %}
+{% block title %}Главная | ЯсеньStudio — Авторская мебель из массива{% endblock %}
 
 {% block content %}
-    <!-- Приветственный баннер -->
-    <div style="background-color: #efebe9; border-left: 5px solid #5d4037; padding: 30px; border-radius: 4px; margin-bottom: 40px;">
-        <h2 style="color: #3e2723; font-size: 32px; margin-bottom: 15px; font-weight: 700;">Создаем изделия, которые передаются по наследству</h2>
-        <p style="font-size: 18px; color: #4e342e; max-width: 800px; line-height: 1.7;">
-            Добро пожаловать в «ЯсеньStudio»! Мы занимаемся изготовлением игрушек, предметов декора и интерьера из ценных пород дерева: ясеня, дуба и карагача. Каждая вещь в нашей студии создаётся в единственном экземпляре с сохранением уникальной текстуры дерева.
-        </p>
+    <!-- ОГРОМНЫЙ HERO-БАННЕР С НАСТОЯЩИМ ПРЕМИАЛЬНЫМ ФОТО ИЗДЕЛИЙ -->
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 40px; margin-top: 50px; margin-bottom: 80px; flex-wrap: wrap;">
+        <!-- Текстовый блок слева -->
+        <div style="flex: 1; min-width: 300px; max-width: 550px;">
+            <h1 style="font-size: 44px; font-weight: 400; line-height: 1.2; color: #1A1A1A; margin-bottom: 25px; font-family: 'Montserrat', sans-serif; letter-spacing: -1px;">
+                Изделия из дуба<br>и массива ценных пород<br>
+            </h1>
+            <p style="font-size: 16px; color: #555; line-height: 1.6; margin-bottom: 35px; font-weight: 300;">
+                Эксклюзивные предметы интерьера ручной работы от семейной мастерской «ЯсеньStudio». Мы бережно сохраняем уникальный природный рисунок ясеня, дуба, карагача и ореха, превращая благородный массив дерева в безупречные современные изделия. Наша мебель создается на вечные времена.
+            </p>
+            <a href="{% url 'catalog' %}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 15px 35px; border-radius: 30px; font-size: 14px; font-weight: 500; letter-spacing: 0.5px; transition: background-color 0.3s;">
+                Смотреть каталог &nbsp;&rarr;
+            </a>
+
+            <!-- Блок статистики мастерской -->
+            <div style="display: flex; gap: 40px; margin-top: 50px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 30px;">
+                <div>
+                    <div style="font-size: 24px; font-weight: 600; color: #1A1A1A;">более 4к</div>
+                    <div style="font-size: 11px; color: #888; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px;">Изделий создано</div>
+                </div>
+                <div>
+                    <div style="font-size: 24px; font-weight: 600; color: #1A1A1A;"> оценка 5.0</div>
+                    <div style="font-size: 11px; color: #888; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px;">на маркетплейсе Wildberries</div>
+                </div>
+                <div>
+                    <div style="font-size: 24px; font-weight: 600; color: #1A1A1A;">4 года</div>
+                    <div style="font-size: 11px; color: #888; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px;">мы вместе в Вами</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Живое фото баннера справа -->
+        <div style="flex: 1.2; min-width: 350px; height: 500px; background-color: #E2DDD5; border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.07);">
+            <img src="/media/products_pics/hero_wooden_ware.jpg" alt="Авторские изделия из дуба ЯсеньStudio" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <!-- Легкий премиальный градиент поверх фото для глубины -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.15), transparent 40%); pointer-events: none;"></div>
+        </div>
     </div>
 
-    <!-- Блок преимуществ мастерской -->
-    <h3 style="color: #3e2723; font-size: 24px; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid #efebe9; padding-bottom: 10px;">Почему выбирают нас</h3>
-
-    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 40px;">
-        <!-- Карточка 1 -->
-        <div style="flex: 1; min-width: 250px; background-color: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
-            <div style="font-size: 30px; margin-bottom: 10px;">🪵</div>
-            <h4 style="color: #3e2723; margin-bottom: 10px; font-weight: 700;">Материалы высшего качества</h4>
-            <p style="color: #666; font-size: 14px;">Используем только тщательно высушенный массив дерева и экологичные масла.</p>
+    <!-- БЛОК КАТЕГОРИЙ -->
+    <div style="margin-bottom: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 35px;">
+            <h2 style="font-size: 28px; font-weight: 500; color: #1A1A1A; letter-spacing: -0.5px;">Популярные категории</h2>
+            <a href="{% url 'catalog' %}" style="color: #1A1A1A; font-size: 14px; font-weight: 500; text-decoration: underline;">Весь ассортимент</a>
         </div>
 
-        <!-- Карточка 2 -->
-        <div style="flex: 1; min-width: 250px; background-color: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
-            <div style="font-size: 30px; margin-bottom: 10px;">📐</div>
-            <h4 style="color: #3e2723; margin-bottom: 10px; font-weight: 700;">Индивидуальный подход</h4>
-            <p style="color: #666; font-size: 14px;">Делаем изделия по вашим размерам, эскизам, чертежам или просто по фото.</p>
-        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
 
-        <!-- Карточка 3 -->
-        <div style="flex: 1; min-width: 250px; background-color: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
-            <div style="font-size: 30px; margin-bottom: 10px;">🖐️</div>
-            <h4 style="color: #3e2723; margin-bottom: 10px; font-weight: 700;">Ручная работа</h4>
-            <p style="color: #666; font-size: 14px;">Внимание к каждой детали — от шлифовки до финального покрытия воском.</p>
+            <!-- Изменяем ссылку в самом начале карточки Декора -->
+<a href="{% url 'catalog' %}?category=decor" class="category-card" style="text-decoration: none; display: block; position: relative; height: 320px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03);">
+
+    <!-- ДОБАВИЛИ ОТСТУПЫ PADDING ДЛЯ ИКОНКИ -->
+    <div style="height: 75%; background-color: #DFDAD3; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 25px;">
+        <!-- ИЗМЕНИЛИ COVER НА CONTAIN, ЧТОБЫ КАРТИНКА СЖАЛАСЬ И ВЛЕЗЛА ПОЛНОСТЬЮ -->
+        <img src="/media/products_pics/decor_icon.webp" alt="Декор" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+    </div>
+
+    <div style="padding: 20px; background: #FFF;">
+        <h3 style="font-size: 16px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px;">Декор</h3>
+        <span style="font-size: 12px; color: #888;">Ёлочные игрушки</span>
+    </div>
+</a>
+
+
+            <a href="{% url 'catalog' %}" class="category-card" style="text-decoration: none; display: block; position: relative; height: 320px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #EAE5DF;">
+                <div style="height: 75%; background-color: #EAE5DF; display: flex; align-items: center; justify-content: center; font-size: 50px;">🍽️</div>
+                <div style="padding: 20px; background: #FFF;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px;">Обеденная зона</h3>
+                    <span style="font-size: 12px; color: #888;">Массивные столы, стулья</span>
+                </div>
+            </a>
+
+            <a href="{% url 'catalog' %}" class="category-card" style="text-decoration: none; display: block; position: relative; height: 320px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03);">
+                <div style="height: 75%; background-color: #E5E0DA; display: flex; align-items: center; justify-content: center; font-size: 50px;">🛏️</div>
+                <div style="padding: 20px; background: #FFF;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px;">Спальня</h3>
+                    <span style="font-size: 12px; color: #888;">Кровати, тумбы из ясеня</span>
+                </div>
+            </a>
+
+            <a href="{% url 'catalog' %}" class="category-card" style="text-decoration: none; display: block; position: relative; height: 320px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03);">
+                <div style="height: 75%; background-color: #DFDAD3; display: flex; align-items: center; justify-content: center; font-size: 50px;">💼</div>
+                <div style="padding: 20px; background: #FFF;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px;">Кухня и декор</h3>
+                    <span style="font-size: 12px; color: #888;">Менажницы, разделочные доски</span>
+                </div>
+            </a>
+
         </div>
     </div>
+
+    <style>
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.06) !important;
+        }
+    </style>
 {% endblock %}

@@ -27,7 +27,7 @@ def order_create(request):
                     quantity=item['quantity']
                 )
                 receipt_items.append({
-                    "Name": item['product'].title[:60],
+                    "Name": item['product'].name[:60],
                     "Price": int(item['price'] * 100),
                     "Quantity": item['quantity'],
                     "Amount": int(item['total_price'] * 100),

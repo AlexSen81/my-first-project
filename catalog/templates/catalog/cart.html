@@ -1,0 +1,136 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Ваша корзина | ЯсеньStudio{% endblock %}
+
+{% block content %}
+<div style="margin-top: 30px; margin-bottom: 80px;">
+    
+    <div style="margin-bottom: 40px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 20px;">
+        <h1 style="font-size: 32px; font-weight: 500; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">Ваша корзина</h1>
+        <p style="font-size: 14px; color: #888; font-weight: 300; margin-top: 5px;">Выбранные изделия из массива ценных пород дерева</p>
+    </div>
+
+    {% if cart %}
+        <div style="display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-start;">
+            
+            <!-- ЛЕВАЯ КОЛОНКА: СПИСОК ТОВАРОВ -->
+            <div style="flex: 2; min-width: 320px; display: flex; flex-direction: column; gap: 20px;">
+                {% for item in cart %}
+                    {% with product=item.product %}
+                        <div id="cart-item-{{ product.id }}" style="background-color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; gap: 20px; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.01); border: 1px solid rgba(0,0,0,0.03); flex-wrap: wrap;">
+                            
+                            <!-- Миниатюра фото -->
+                            <div style="width: 90px; height: 90px; background-color: #F2EDE6; border-radius: 12px; overflow: hidden; flex-shrink: 0;">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% else %}
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #A09B95; font-size: 24px;">🪵</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Название и категория -->
+                            <div style="flex: 1; min-width: 180px;">
+                                <span style="font-size: 11px; text-transform: uppercase; color: #8D8781; font-weight: 600; display: block; margin-bottom: 4px;">{{ product.category.name }}</span>
+                                <h3 style="font-size: 16px; font-weight: 500; color: #1A1A1A; font-family: 'Montserrat', sans-serif;"><a href="{% url 'product_detail' product.id %}" style="color: #1A1A1A; text-decoration: none;">{{ product.name }}</a></h3>
+                                <div style="font-size: 13px; color: #888; margin-top: 4px;">{{ product.price }} ₽ / шт.</div>
+                            </div>
+
+                            <!-- Управление количеством (Инпуты со стрелочками) -->
+                            <div style="display: flex; align-items: center; background-color: #F2EDE6; border-radius: 20px; padding: 5px 15px; gap: 15px;">
+                                <button onclick="updateQuantity('{{ product.id }}', -1)" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #1A1A1A; font-weight: 600;">-</button>
+                                <input id="quantity-input-{{ product.id }}" type="number" value="{{ item.quantity }}" min="1" onchange="inputQuantityChanged('{{ product.id }}', this.value)" style="width: 35px; text-align: center; background: none; border: none; font-size: 15px; font-weight: 600; color: #1A1A1A; -moz-appearance: textfield;">
+                                <button onclick="updateQuantity('{{ product.id }}', 1)" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #1A1A1A; font-weight: 600;">+</button>
+                            </div>
+
+                            <!-- Итоговая стоимость этой позиции -->
+                            <div style="text-align: right; min-width: 100px;">
+                                <div style="font-size: 11px; color: #999; text-transform: uppercase; margin-bottom: 2px;">Итого</div>
+                                <span style="font-size: 18px; font-weight: 600; color: #1A1A1A;"><span id="item-total-{{ product.id }}">{{ item.total_price }}</span> ₽</span>
+                            </div>
+
+                            <!-- Кнопка удаления (крестик) -->
+                            <a href="{% url 'cart_remove' product.id %}" style="color: #A09B95; text-decoration: none; font-size: 18px; margin-left: 10px; transition: color 0.2s;" onmouseover="this.style.color='#1A1A1A'" onmouseout="this.style.color='#A09B95'">
+                                &times;
+                            </a>
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+
+            <!-- ПРАВАЯ КОЛОНКА: ИТОГОВЫЙ ЧЕК -->
+            <div style="flex: 0.8; min-width: 280px; background-color: #FFFFFF; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.01); border: 1px solid rgba(0,0,0,0.03);">
+                <h3 style="font-size: 18px; font-weight: 600; color: #1A1A1A; margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">Детали заказа</h3>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; color: #666; font-weight: 300;">
+                    <span>Доставка:</span>
+                    <span style="color: #1A1A1A; font-weight: 500;">Рассчитывается отдельно</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 20px; margin-top: 20px; margin-bottom: 30px;">
+                    <span style="font-size: 16px; font-weight: 600; color: #1A1A1A;">Общая стоимость:</span>
+                    <span style="font-size: 22px; font-weight: 700; color: #1A1A1A;"><span id="cart-total-summary">{{ cart.get_total_price }}</span> ₽</span>
+                </div>
+
+                <!-- ОБНОВЛЕННАЯ КНОПКА В ОРИГИНАЛЬНОМ ДИЗАЙНЕ В cart.html -->
+<a href="{% url 'order_create' %}" style="display: block; text-decoration: none; text-align: center; background-color: #1A1A1A; color: #FFFFFF; padding: 15px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; letter-spacing: 0.5px;">
+    Оформить заказ
+</a>
+
+                </a>
+            </div>
+
+        </div>
+    {% else %}
+        <!-- Если корзина пуста -->
+        <div style="text-align: center; padding: 80px 20px; background-color: #FFFFFF; border-radius: 16px; border: 1px solid rgba(0,0,0,0.03);">
+            <div style="font-size: 50px; margin-bottom: 20px;">🛒</div>
+            <h3 style="font-size: 20px; font-weight: 500; color: #1A1A1A; margin-bottom: 10px;">Ваша корзина пуста</h3>
+            <p style="font-size: 14px; color: #777; font-weight: 300; margin-bottom: 25px;">Вы еще не добавили ни одного изделия мастерской.</p>
+            <a href="{% url 'catalog' %}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 30px; border-radius: 20px; font-size: 13px;">Перейти в каталог</a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- AJAX-скрипт пересчета сумм "на лету" -->
+<script>
+    function updateQuantity(productId, change) {
+        const input = document.getElementById(`quantity-input-${productId}`);
+        let currentVal = parseInt(input.value);
+        let newVal = currentVal + change;
+        
+        if (newVal < 1) return; // Не даем опустить ниже 1 штуки через стрелочки
+        
+        input.value = newVal;
+        sendUpdate(productId, newVal);
+    }
+
+    function inputQuantityChanged(productId, value) {
+        let newVal = parseInt(value);
+        if (isNaN(newVal) || newVal < 1) newVal = 1;
+        sendUpdate(productId, newVal);
+    }
+
+    function sendUpdate(productId, quantity) {
+        fetch(`/cart/update-ajax/${productId}/?quantity=${quantity}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Мгновенно обновляем итоговую стоимость этой позиции на экране
+                    document.getElementById(`item-total-${productId}`).innerText = data.item_total;
+                    
+                    // Мгновенно обновляем общую стоимость всего чека справа
+                    document.getElementById('cart-total-summary').innerText = data.cart_total;
+                }
+            });
+    }
+</script>
+
+<style>
+    /* Убираем стрелочки у инпутов количества */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+{% endblock %}
