@@ -48,21 +48,31 @@
                             {{ product.description|truncatewords:20 }}
                         </p>
 
-                        <!-- Блок цены и кнопки покупки -->
-                        <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; margin-top: auto;">
+                        <!-- БЛОК ЦЕНЫ И ДВУХ КНОПОК В КАТАЛОГЕ -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; margin-top: auto; flex-wrap: wrap; gap: 10px;">
+                            <!-- Блок цены слева -->
                             <div>
                                 <span style="font-size: 11px; color: #999; text-transform: uppercase; display: block; font-weight: 500; margin-bottom: 2px;">Цена</span>
-                                <span style="font-size: 20px; font-weight: 600; color: #1A1A1A;">{{ product.price }} ₽</span>
+                                <span style="font-size: 18px; font-weight: 600; color: #1A1A1A;">{{ product.price }} ₽</span>
                             </div>
 
-                            <a href="{% url 'product_detail' product.id %}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 22px; border-radius: 25px; font-size: 13px; font-weight: 500; transition: background-color 0.2s;">
-                                Открыть
-                            </a>
+                            <!-- Блок с двумя кнопками справа -->
+                            <div style="display: flex; gap: 8px;">
+                                <!-- Кнопка Открыть (черная) -->
+                                <a href="{% url 'product_detail' product.id %}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 10px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                                    Открыть
+                                </a>
+
+                                <!-- Кнопка Купить (изящная светлая с границей) -->
+                                <a href="{% url 'cart_add' product.id %}" style="display: inline-block; background-color: transparent; color: #1A1A1A; text-decoration: none; padding: 10px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; border: 1px solid #1A1A1A; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#1A1A1A'; this.style.color='#FFFFFF';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1A1A1A';">
+                                    Купить
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </div> <!-- Конец текстового описания товара -->
+                </div> <!-- Конец карточки товара -->
             {% endfor %}
-        </div>
+        </div> <!-- Конец сетки товаров -->
     {% else %}
         <!-- Если в категории пока нет товаров -->
         <div style="text-align: center; padding: 80px 20px; background-color: #FFFFFF; border-radius: 16px; border: 1px solid rgba(0,0,0,0.03);">
