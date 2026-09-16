@@ -13,6 +13,12 @@
     <!-- Подключаем Font Awesome для иконок мессенджеров -->
     <link rel="stylesheet" href="https://cloudflare.com">
 
+    <!-- Подключаем шрифт Golos Text из Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+
+
+
+
     <style>
         /* Global Styles */
         * {
@@ -21,7 +27,7 @@
             padding: 0;
         }
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Candara Light', sans-serif;
             background-color: #F7F4F0;
             color: #1A1A1A;
             display: flex;
@@ -153,7 +159,28 @@
                 font-size: 12px;
             }
         }
-    </style>
+            nav a {
+        font-size: 12px;
+    }
+
+        /* Применяем шрифт Golos Text, настраиваем размеры и идеальную четкость */
+    h1, h2, h3, h4, h5, h6, p, a, span, div, button, input, textarea {
+        font-family: 'Golos Text', 'Segoe UI', sans-serif !important;
+    }
+
+    /* Делаем обычный текст и меню крупнее, но изящнее */
+    p, a, span, div {
+        font-weight: 400 !important; /* Умеренная толщина для читабельности */
+        font-size: 104% !important;
+    }
+
+    /* Заголовки оставляем более плотными и четкими */
+    h1, h2, h3, h4 {
+        font-weight: 500 !important;
+    }
+}
+</style>
+
 </head>
 <body>
 
@@ -168,6 +195,7 @@
             <nav>
                 <a href="{% url 'index' %}">Главная</a>
                 <a href="{% url 'catalog' %}">Каталог</a>
+                <a href="{% url 'delivery' %}">Доставка</a>
                 <a href="{% url 'contacts' %}">Контакты</a>
                 <a href="{% url 'cart_detail' %}">Корзина</a>
             </nav>

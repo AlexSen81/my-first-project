@@ -1,0 +1,100 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Доставка изделий | ЯсеньStudio{% endblock %}
+
+{% block content %}
+<div style="margin-top: 30px; margin-bottom: 80px;">
+
+    <!-- Заголовок страницы -->
+    <div style="margin-bottom: 40px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 20px;">
+        <h1 style="font-size: 32px; font-weight: 500; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">Доставка по всей России</h1>
+        <p style="font-size: 14px; color: #888; font-weight: 300; margin-top: 5px;">
+            Бережно упаковываем и отправляем наши изделия из массива в любой регион РФ
+        </p>
+    </div>
+
+    <!-- Основной блок с пояснениями -->
+    <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;">
+        <div style="flex: 1.5; min-width: 320px; font-size: 15px; color: #4A4A4A; line-height: 1.7; font-weight: 300;">
+            <p style="margin-bottom: 20px;">
+                Поскольку изделия из дуба, ясеня и карагача обладают внушительным весом и требуют особого отношения, мы подходим к логистике максимально ответственно. Каждое изделие перед отправкой проходит тщательную проверку и упаковывается в несколько защитных слоёв (воздушно-пузырьковая плёнка, плотный картон, стрейч). Для крупных предметов (столы, консоли) заказывается жесткая обрешётка в транспортной компании.
+            </p>
+            <p style="margin-bottom: 20px; font-weight: 500; color: #1A1A1A;">
+                🚛 Отправка осуществляется из нашей мастерской в течение 1-3 рабочих дней после готовности изделия.
+            </p>
+        </div>
+
+        <!-- Информационная плашка справа -->
+        <div style="flex: 1; min-width: 280px; background-color: #FFFFFF; border-radius: 16px; padding: 25px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 4px 20px rgba(0,0,0,0.01);">
+            <h3 style="font-size: 16px; font-weight: 600; color: #1A1A1A; margin-bottom: 15px; font-family: 'Montserrat', sans-serif;">Важно при получении:</h3>
+            <ul style="padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+                <li>Обязательно осматривайте груз при получении в ТК до подписания документов.</li>
+                <li>Все отправления застрахованы на полную стоимость изделий.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- БЛОК КАРТОЧЕК ТРАНСПОРТНЫХ КОМПАНИЙ -->
+    <h2 style="font-size: 22px; font-weight: 500; color: #1A1A1A; margin-bottom: 25px; font-family: 'Montserrat', sans-serif;">Рассчитать стоимость доставки:</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+
+        <!-- Карточка СДЭК -->
+        <div class="delivery-card" style="background-color: #FFFFFF; border-radius: 16px; padding: 30px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; justify-content: space-between; height: 210px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <div>
+                <h3 style="font-size: 20px; font-weight: 600; color: #2E7D32; margin-bottom: 10px; font-family: 'Montserrat', sans-serif;">СДЭК</h3>
+                <p style="font-size: 13px; color: #666; font-weight: 300; line-height: 1.5;">Идеально подходит для небольших предметов декора, менажниц и разделочных досок. Быстрая доставка до пунктов выдачи или курьером.</p>
+            </div>
+            <a href="https://cdek.ru" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 10px; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: 15px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#2E7D32'" onmouseout="this.style.backgroundColor='#1A1A1A'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="flex-shrink: 0;">
+                    <circle cx="12" cy="12" r="10" fill="#2E7D32"/>
+                    <path d="M8 12L11 15L16 9" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Калькулятор СДЭК
+            </a>
+        </div>
+
+        <!-- Карточка Яндекс Доставка -->
+        <div class="delivery-card" style="background-color: #FFFFFF; border-radius: 16px; padding: 30px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; justify-content: space-between; height: 210px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <div>
+                <h3 style="font-size: 20px; font-weight: 600; color: #F59E0B; margin-bottom: 10px; font-family: 'Montserrat', sans-serif;">Яндекс Доставка</h3>
+                <p style="font-size: 13px; color: #666; font-weight: 300; line-height: 1.5;">Отличный выбор для междугородней отправки средних посылок, а также для грузовой и легковой экспресс-доставки по городу.</p>
+            </div>
+            <a href="https://dostavka.yandex.ru/order/" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 10px; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: 15px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#F59E0B'" onmouseout="this.style.backgroundColor='#1A1A1A'">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="flex-shrink: 0;">
+        <circle cx="12" cy="12" r="10" fill="#F59E0B"/>
+        <path d="M9 7H11.5L14.5 12.5L11.5 17H9L12 12.5L9 7Z" fill="#000000"/>
+    </svg>
+    Калькулятор Яндекс
+</a>
+        </div>
+
+        <!-- Карточка Почта России -->
+        <div class="delivery-card" style="background-color: #FFFFFF; border-radius: 16px; padding: 30px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; justify-content: space-between; height: 210px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <div>
+                <h3 style="font-size: 20px; font-weight: 600; color: #0046CE; margin-bottom: 10px; font-family: 'Montserrat', sans-serif;">Почта России</h3>
+                <p style="font-size: 13px; color: #666; font-weight: 300; line-height: 1.5;">Доставка отправлений в самые отдалённые уголки страны, куда не доезжают другие крупные коммерческие ТК.</p>
+            </div>
+            <a href="https://pochta.ru" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 10px; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: 15px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#0046CE'" onmouseout="this.style.backgroundColor='#1A1A1A'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="flex-shrink: 0;">
+                    <rect width="24" height="24" rx="4" fill="#0046CE"/>
+                    <path d="M6 7H9.5C11.5 7 12.5 8 12.5 9.5C12.5 11 11.5 12 9.5 12H7.5V17H6V7ZM7.5 10.5H9.5C10.5 10.5 11 10.2 11 9.5C11 8.8 10.5 8.5 9.5 8.5H7.5V10.5Z" fill="#FFFFFF"/>
+                    <path d="M15.5 12C17.5 12 18.5 13 18.5 14.5C18.5 16 17.5 17 15.5 17C13.5 17 12.5 16 12.5 14.5C12.5 13 13.5 12 15.5 12ZM15.5 15.5C16.5 15.5 17 15.2 17 14.5C17 13.8 16.5 13.5 15.5 13.5C14.5 13.5 14 13.8 14 14.5C14 15.2 14.5 15.5 15.5 15.5Z" fill="#FFFFFF"/>
+                </svg>
+                Калькулятор Почты
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .delivery-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    }
+    .delivery-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.06) !important;
+    }
+</style>
+{% endblock %}

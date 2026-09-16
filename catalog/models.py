@@ -3,6 +3,8 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название категории")
     slug = models.SlugField(max_length=100, unique=True, verbose_name="URL-префикс (slug)")
+    # Поле для обложки баннера на главной странице
+    image = models.ImageField(upload_to='category_pics/', verbose_name="Обложка категории (для главной)", blank=True, null=True)
 
     class Meta:
         verbose_name = "Категория"
@@ -27,7 +29,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-# ДОБАВЛЯЕМ В КОНЕЦ ФАЙЛА MODELS.PY
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name="Товар")
     image = models.ImageField(upload_to='products_pics/gallery/', verbose_name="Дополнительное фото")

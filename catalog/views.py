@@ -5,8 +5,11 @@ from .cart import Cart
 from .forms import CartAddProductForm  # Твоя форма количества
 
 
+# ОБНОВЛЕННАЯ ФУНКЦИЯ ГЛАВНОЙ СТРАНИЦЫ
 def index(request):
-    return render(request, 'catalog/index.html')
+    # Достаем все категории, чтобы вывести их в виде баннеров
+    categories = Category.objects.all()
+    return render(request, 'catalog/index.html', {'categories': categories})
 
 
 def contacts(request):
@@ -116,3 +119,7 @@ def cart_update_ajax(request, product_id):
         'item_total_price': f"{item_total_price:.2f} руб.",
         'cart_total_price': f"{float(cart.get_total_price()):.2f} руб."
     })
+
+
+def delivery_view(request):
+    return render(request, 'catalog/delivery.html')

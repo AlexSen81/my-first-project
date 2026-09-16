@@ -14,4 +14,6 @@ urlpatterns = [
 
     # Ссылка для мгновенного обновления корзины через AJAX
     path('cart/update-ajax/<int:product_id>/', views.cart_update_ajax, name='cart_update_ajax'),
+    # Добавь эту строчку внутрь списка urlpatterns в catalog/urls.py
+    path('delivery/', views.delivery_view, name='delivery'),
 ]
