@@ -5,6 +5,8 @@ class Category(models.Model):
     slug = models.SlugField(max_length=100, unique=True, verbose_name="URL-префикс (slug)")
     # Поле для обложки баннера на главной странице
     image = models.ImageField(upload_to='category_pics/', verbose_name="Обложка категории (для главной)", blank=True, null=True)
+    description = models.TextField(verbose_name="Описание для главного баннера", blank=True, null=True,
+                                   help_text="Расскажите покупателю об особенностях этой категории товаров на главной странице")
 
     class Meta:
         verbose_name = "Категория"

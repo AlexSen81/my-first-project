@@ -1,15 +1,66 @@
 import requests
+from urllib.parse import urlunparse
+import threading
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.conf import settings
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from catalog.cart import Cart
 
-import urllib3
+def send_telegram_notification(order, receipt_items):
+    """Абсолютно защищенная от багов версия отправки в Telegram"""
+    token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
+    chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', None)
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    if not token or not chat_id:
+        print("Telegram бот не настроен in settings.py")
+        return
 
+    # Формируем текст сообщения
+    message = f"🔔 **НОВЫЙ ЗАКАЗ №{order.id} на сайте ya-studio.shop!**\n\n"
 
+    first_name = getattr(order, 'first_name', '')
+    last_name = getattr(order, 'last_name', '')
+    message += f"👤 **Клиент:** {first_name} {last_name}\n"
+
+    phone = getattr(order, 'phone', 'Не указан')
+    message += f"📞 **Телефон:** {phone}\n"
+
+    message += "\n📦 **СОСТАВ ЗАКАЗА:**\n"
+    total_price = 0
+    for item in receipt_items:
+        item_total = (item['Price'] / 100) * item['Quantity']
+        total_price += item_total
+        clean_name = str(item['Name']).replace('*', '').replace('_', '')
+        message += f"• {clean_name} — {item['Quantity']} шт. ({item_total:.2f} руб.)\n"
+
+    message += f"\n💰 **Итого к оплате:** {total_price:.2f} руб.\n"
+    message += f"💳 **Статус:** Ожидает оплаты (Т-Банк / СБП)"
+
+    # СБОРКА URL (Используем напрямую импортированную функцию)
+    url_components = (
+        'https',
+        'api.telegram.org',
+        f'/bot{token}/sendMessage',
+        '',
+        '',
+        ''
+    )
+
+    url = urlunparse(url_components)
+
+    payload = {
+        'chat_id': chat_id,
+        'text': message,
+        'parse_mode': 'Markdown'
+    }
+
+    try:
+        response = requests.post(url, json=payload, timeout=5)
+        print(f"Ответ Telegram API: {response.status_code}")
+    except Exception as e:
+        print(f"Ошибка отправки в Telegram: {e}")
 def order_create(request):
     cart = Cart(request)
     if request.method == 'POST':
@@ -34,6 +85,13 @@ def order_create(request):
                     "Tax": "none"
                 })
 
+            # Вызов уведомления в отдельном фоновом потоке
+            threading.Thread(
+                target=send_telegram_notification,
+                args=(order, receipt_items),
+                daemon=True
+            ).start()
+
             cart.clear()
 
             headers = {'Content-Type': 'application/json'}
@@ -42,8 +100,8 @@ def order_create(request):
                 "Amount": total_amount_kopecks,
                 "OrderId": f"YASEN-{order.id}",
                 "Description": f"Оплата заказа №{order.id} в ЯсеньStudio",
-                "SuccessURL": f"http://127.0.0{order.id}/",
-                "FailURL": "http://127.0.0",
+                "SuccessURL": f"https://ya-studio.shop{order.id}/",
+                "FailURL": "https://ya-studio.shop",
                 "Receipt": {
                     "Email": "info@yasenstudio.ru",
                     "Phone": order.phone,
@@ -64,7 +122,6 @@ def order_create(request):
                     verify=False
                 )
 
-                # Защита: проверяем, что банк вернул именно JSON-данные
                 if response.status_code == 200 and 'application/json' in response.headers.get('Content-Type', ''):
                     response_data = response.json()
                     if response_data.get('Success') and 'PaymentURL' in response_data:
@@ -77,7 +134,6 @@ def order_create(request):
             except Exception as e:
                 print(f"Тестовый сервер Т-Банка недоступен: {e}. Включаем резервный QR-код.")
 
-            # РЕЗЕРВНЫЙ СЦЕНАРИЙ: Если банк лежит, перенаправляем на нашу внутреннюю страницу с QR-кодом СБП
             return render(request, 'orders/pay_sbp.html', {'order': order, 'total_price': total_amount_kopecks / 100})
     else:
         form = OrderCreateForm()
