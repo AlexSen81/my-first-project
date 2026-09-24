@@ -99,12 +99,12 @@ TELEGRAM_CHAT_ID = '964789318'
 # НАСТРОЙКИ ОТПРАВКИ EMAIL УВЕДОМЛЕНИЙ ЧЕРЕЗ BEGET (УНИВЕРСАЛЬНЫЙ ЛОКАЛЬНЫЙ ХОСТ)
 # НАСТРОЙКИ ОТПРАВКИ EMAIL УВЕДОМЛЕНИЙ ЧЕРЕЗ BEGET (НАДЕЖНОЕ SMTP С ШИФРОВАНИЕМ)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '://beget.com'                 # Официальный SMTP-сервер Beget
+EMAIL_HOST = 'smtp.beget.com'                 # Официальный SMTP-сервер Beget
 EMAIL_PORT = 465                               # Защищенный SSL-порт
 EMAIL_USE_SSL = True                           # Включаем SSL-шифрование
 EMAIL_USE_TLS = False
 EMAIL_HOST_USER = 'info@ya-studio.shop'        # Твой почтовый ящик
-EMAIL_HOST_PASSWORD = 'Zctymcnelbj2026!!'   # Пароль от почты info@ya-studio.shop
+EMAIL_HOST_PASSWORD = '2345Yjdsqgfhjkm!!'   # Пароль от почты info@ya-studio.shop
 DEFAULT_FROM_EMAIL = 'info@ya-studio.shop'     # Адрес, от имени которого будут уходить письма
 
 
