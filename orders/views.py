@@ -9,7 +9,7 @@ from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from catalog.cart import Cart
 
-
+#проблемный блок
 def send_telegram_notification(order, receipt_items):
     """Абсолютно защищенная от багов версия отправки в Telegram через системный curl"""
     token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
