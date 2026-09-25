@@ -9,7 +9,8 @@ from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from catalog.cart import Cart
 
-#проблемный блок
+
+# проблемный блок
 def send_telegram_notification(order, receipt_items):
     """Абсолютно защищенная от багов версия отправки в Telegram через системный curl"""
     token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
@@ -61,15 +62,14 @@ def send_telegram_notification(order, receipt_items):
         import subprocess
         import json
 
-        # Формируем системную команду curl для отправки сообщения в обход SSL Python 3.14
-        command = [
-            'curl', '-s', '-X', 'POST', url,
-            '-H', 'Content-Type: application/json',
-            '-d', json.dumps(payload)
-        ]
+        # Формируем чистый JSON-текст
+        payload_json = json.dumps(payload)
 
-        # Выполняем команду на уровне операционной системы сервера
-        result = subprocess.run(command, capture_output=True, text=True, timeout=5)
+        # Собираем монолитную строку для консоли Linux
+        curl_command = f"curl -s -X POST {url} -H 'Content-Type: application/json' -d '{payload_json}'"
+
+        # Выполняем строго через системную оболочку shell=True
+        result = subprocess.run(curl_command, shell=True, capture_output=True, text=True, timeout=5)
         print(f"Ответ системного curl: {result.stdout}")
     except Exception as e:
         print(f"Ошибка отправки через curl в Telegram: {e}")
