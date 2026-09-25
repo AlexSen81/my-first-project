@@ -85,13 +85,21 @@ def order_create(request):
                     "Tax": "none"
                 })
 
-            # Вызов уведомления в отдельном фоновом потоке
+            # Создаем одну общую фоновую задачу для всех уведомлений
+            def run_notifications_bg(ord_obj, items_obj):
+                # 1. Отправляем Телеграм
+                try:
+                    send_telegram_notification(ord_obj, items_obj)
+                except Exception as ex:
+                    print(f"Ошибка фонового ТГ: {ex}")
+
+            # Запускаем поток БЕЗ daemon=True, чтобы Gunicorn дал ему завершиться
             threading.Thread(
-                target=send_telegram_notification,
-                args=(order, receipt_items),
-                daemon=True
+                target=run_notifications_bg,
+                args=(order, receipt_items)
             ).start()
 
+            # Возвращаем очистку корзины на место
             cart.clear()
 
             headers = {'Content-Type': 'application/json'}
