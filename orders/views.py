@@ -116,17 +116,19 @@ def order_create(request):
             # Создаем одну общую фоновую задачу для всех уведомлений
             def run_notifications_bg(ord_obj, items_obj):
                 # 1. Отправляем почту из нашего нового файла emails.py
+                # Твой рабочий вызов почты (оставляем как есть!)
                 try:
                     from .emails import send_email_notification
-                    send_email_notification(ord_obj, items_obj)
+                    send_email_notification(order, receipt_items)
                 except Exception as ex:
-                    print(f"Ошибка фоновой почты: {ex}")
+                    print(f"Ошибка отправки почты: {ex}")
 
-                # 2. Затем отправляем Телеграм
+                # НАШ НОВЫЙ ТОЧЕЧНЫЙ ВЫЗОВ ТЕЛЕГРАМА:
                 try:
-                    send_telegram_notification(ord_obj, items_obj)
+                    from .telegram import send_telegram_notification
+                    send_telegram_notification(order, receipt_items)
                 except Exception as ex:
-                    print(f"Ошибка фонового ТГ: {ex}")
+                    print(f"Ошибка вызова модуля telegram.py: {ex}")
 
             # Запускаем поток БЕЗ daemon=True
             threading.Thread(
