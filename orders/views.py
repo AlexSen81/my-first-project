@@ -72,7 +72,7 @@ def send_telegram_notification(order, receipt_items):
         # Команда curl читает данные напрямую из файла через символ @
         # Это защищает сообщение от любых багов с кавычками и переносами строк!
         command = [
-            'curl', '-s', '-X', 'POST', url,
+            'curl', '-v', '-X', 'POST', url,
             '-H', 'Content-Type: application/json',
             '-d', f'@{temp_file_path}'
         ]
