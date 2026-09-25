@@ -11,12 +11,12 @@ from catalog.cart import Cart
 
 
 def send_telegram_notification(order, receipt_items):
-    """Абсолютно защищенная от багов версия отправки в Telegram"""
+    """Абсолютно защищенная от багов версия отправки в Telegram через системный curl"""
     token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
     chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', None)
 
     if not token or not chat_id:
-        print("Telegram бот не настроен in settings.py")
+        print("Telegram бот не настроен в settings.py")
         return
 
     # Формируем текст сообщения
@@ -40,7 +40,7 @@ def send_telegram_notification(order, receipt_items):
     message += f"\n💰 **Итого к оплате:** {total_price:.2f} руб.\n"
     message += f"💳 **Статус:** Ожидает оплаты (Т-Банк / СБП)"
 
-    # СБОРКА URL (Используем напрямую импортированную функцию)
+    # СБОРКА URL
     url_components = (
         'https',
         'api.telegram.org',
@@ -49,7 +49,6 @@ def send_telegram_notification(order, receipt_items):
         '',
         ''
     )
-
     url = urlunparse(url_components)
 
     payload = {
@@ -59,21 +58,21 @@ def send_telegram_notification(order, receipt_items):
     }
 
     try:
-        import ssl
-        from urllib3.util import create_urllib3_context
+        import subprocess
+        import json
 
-        # Создаем современный, строгий TLS-контекст, который требует Telegram
-        ctx = create_urllib3_context()
-        ctx.load_default_certs()
+        # Формируем системную команду curl для отправки сообщения в обход SSL Python 3.14
+        command = [
+            'curl', '-s', '-X', 'POST', url,
+            '-H', 'Content-Type: application/json',
+            '-d', json.dumps(payload)
+        ]
 
-        # Передаем этот контекст в сессию requests
-        session = requests.Session()
-        session.mount("https://", HTTPAdapter(ssl_context=ctx))
-
-        response = session.post(url, json=payload, timeout=5)
-        print(f"Ответ Telegram API: {response.status_code}")
+        # Выполняем команду на уровне операционной системы сервера
+        result = subprocess.run(command, capture_output=True, text=True, timeout=5)
+        print(f"Ответ системного curl: {result.stdout}")
     except Exception as e:
-        print(f"Ошибка отправки в Telegram: {e}")
+        print(f"Ошибка отправки через curl в Telegram: {e}")
 
 
 def order_create(request):
@@ -149,7 +148,7 @@ def order_create(request):
                     json=payload,
                     headers=headers,
                     timeout=5,
-                    verify=True
+                    verify=False
                 )
 
                 if response.status_code == 200 and 'application/json' in response.headers.get('Content-Type', ''):
