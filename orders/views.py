@@ -1,92 +1,11 @@
 import requests
-from urllib.parse import urlunparse
 import threading
-from requests.adapters import HTTPAdapter
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.conf import settings
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from catalog.cart import Cart
-
-
-# проблемный блок
-def send_telegram_notification(order, receipt_items):
-    """Абсолютно защищенная от багов версия отправки в Telegram через системный curl"""
-    token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
-    chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', None)
-
-    if not token or not chat_id:
-        print("Telegram бот не настроен в settings.py")
-        return
-
-    # Формируем текст сообщения
-    message = f"🔔 **НОВЫЙ ЗАКАЗ №{order.id} на сайте ya-studio.shop!**\n\n"
-
-    first_name = getattr(order, 'first_name', '')
-    last_name = getattr(order, 'last_name', '')
-    message += f"👤 **Клиент:** {first_name} {last_name}\n"
-
-    phone = getattr(order, 'phone', 'Не указан')
-    message += f"📞 **Телефон:** {phone}\n"
-
-    message += "\n📦 **СОСТАВ ЗАКАЗА:**\n"
-    total_price = 0
-    for item in receipt_items:
-        item_total = (item['Price'] / 100) * item['Quantity']
-        total_price += item_total
-        clean_name = str(item['Name']).replace('*', '').replace('_', '')
-        message += f"• {clean_name} — {item['Quantity']} шт. ({item_total:.2f} руб.)\n"
-
-    message += f"\n💰 **Итого к оплате:** {total_price:.2f} руб.\n"
-    message += f"💳 **Статус:** Ожидает оплаты (Т-Банк / СБП)"
-
-    # СБОРКА URL
-    url_components = (
-        'https',
-        'api.telegram.org',
-        f'/bot{token}/sendMessage',
-        '',
-        '',
-        ''
-    )
-    url = urlunparse(url_components)
-
-    payload = {
-        'chat_id': chat_id,
-        'text': message,
-        'parse_mode': 'Markdown'
-    }
-
-    try:
-        import subprocess
-        import json
-        import tempfile
-        import os
-
-        # Создаем временный файл в памяти сервера, который сам удалится
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json', encoding='utf-8') as tf:
-            json.dump(payload, tf, ensure_ascii=False)
-            temp_file_path = tf.name
-
-        # Команда curl читает данные напрямую из файла через символ @
-        # Это защищает сообщение от любых багов с кавычками и переносами строк!
-        command = [
-            'curl', '-v', '-X', 'POST', url,
-            '-H', 'Content-Type: application/json',
-            '-d', f'@{temp_file_path}'
-        ]
-
-        # Выполняем команду БЕЗ опасного shell=True как чистый изолированный процесс
-        result = subprocess.run(command, capture_output=True, text=True, timeout=5)
-        print(f"Ответ системного curl: {result.stdout}")
-
-        # Удаляем временный файл после отправки
-        if os.path.exists(temp_file_path):
-            os.remove(temp_file_path)
-
-    except Exception as e:
-        print(f"Ошибка отправки через curl-файл в Telegram: {e}")
 
 
 def order_create(request):
@@ -113,17 +32,16 @@ def order_create(request):
                     "Tax": "none"
                 })
 
-            # Создаем одну общую фоновую задачу для всех уведомлений
+            # ТВОЯ ФОНОВАЯ ФУНКЦИЯ: Переменные почты сохранены для стабильности!
             def run_notifications_bg(ord_obj, items_obj):
-                # 1. Отправляем почту из нашего нового файла emails.py
-                # Твой рабочий вызов почты (оставляем как есть!)
+                # 1. Отправляем почту (СТРОГО ТВОЙ РАБОЧИЙ ВАРИАНТ)
                 try:
                     from .emails import send_email_notification
                     send_email_notification(order, receipt_items)
                 except Exception as ex:
                     print(f"Ошибка отправки почты: {ex}")
 
-                # НАШ НОВЫЙ ТОЧЕЧНЫЙ ВЫЗОВ ТЕЛЕГРАМА:
+                # 2. НАШ НОВЫЙ ТОЧЕЧНЫЙ ВЫЗОВ ТЕЛЕГРАМА (Использует те же рабочие переменные)
                 try:
                     from .telegram import send_telegram_notification
                     send_telegram_notification(order, receipt_items)
@@ -143,7 +61,7 @@ def order_create(request):
             payload = {
                 "TerminalKey": settings.TINKOFF_TERMINAL_KEY,
                 "Amount": total_amount_kopecks,
-                "OrderId": f"YASEN-{order.id}",
+                "OrderId": f"YEN-{order.id}",
                 "Description": f"Оплата заказа №{order.id} в ЯсеньStudio",
                 "SuccessURL": f"https://ya-studio.shop{order.id}/",
                 "FailURL": "https://ya-studio.shop",
@@ -174,8 +92,7 @@ def order_create(request):
                         order.save()
                         return redirect(response_data['PaymentURL'])
 
-                print(
-                    f"Тестовый сервер Т-Банка вернул текст вместо JSON (Код: {response.status_code}). Включаем резервный QR-код.")
+                print(f"Тестовый сервер Т-Банка вернул текст вместо JSON (Код: {response.status_code}). Включаем резервный QR-код.")
             except Exception as e:
                 print(f"Тестовый сервер Т-Банка недоступен: {e}. Включаем резервный QR-код.")
 
