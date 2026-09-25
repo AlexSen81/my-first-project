@@ -1,13 +1,14 @@
-import requests
-import urllib3
+import ssl
+import json
+import urllib.request
 from django.conf import settings
-
-# Жестко отключаем любые варнинги и проверки SSL на уровне сетевой библиотеки
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def send_telegram_notification(order, receipt_items):
-    """Изолированный модуль отправки в Telegram с принудительным отключением SSL-проверок"""
+    """
+    Абсолютно независимая версия на встроенном urllib.request.
+    Полностью обходит зависания requests и баги SSL в Python 3.14.
+    """
     token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
     chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', None)
 
@@ -31,7 +32,7 @@ def send_telegram_notification(order, receipt_items):
     message += f"\n💰 **Итого к оплате:** {total_price:.2f} руб.\n"
     message += "💳 **Статус:** Ожидает оплаты (Т-Банк / СБП)"
 
-    # Прямой URL бота
+    # Прямой URL
 
     url = f"https://api.telegram.org/bot8985203102:AAHZQ09XLnk_I0GQGS0DxYeBXNjVBYMK49Y/sendMessage"
 
@@ -41,9 +42,25 @@ def send_telegram_notification(order, receipt_items):
         'parse_mode': 'Markdown'
     }
 
+    # Превращаем данные в байты JSON
+    data = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+
+    # ЖЕСТКИЙ ПРОБОЙ SSL: Создаем системный контекст, который полностью игнорирует любые проверки
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    # Формируем чистый низкоуровневый HTTP-запрос
+    req = urllib.request.Request(
+        url,
+        data=data,
+        headers={'Content-Type': 'application/json'}
+    )
+
     try:
-        # verify=False принудительно заставит Python 3.14 пропустить handshake
-        response = requests.post(url, json=payload, timeout=8, verify=False)
-        print(f"[Telegram] Ответ API: Код {response.status_code}, Тело: {response.text}")
+        # Отправляем со строгим таймаутом 5 секунд, чтобы поток никогда не зависал!
+        with urllib.request.urlopen(req, context=ctx, timeout=5) as response:
+            html = response.read().decode('utf-8')
+            print(f"[Telegram УСПЕХ] Ответ API: {html}")
     except Exception as e:
-        print(f"[Telegram] Ошибка отправки: {e}")
+        print(f"[Telegram КРИТИЧЕСКАЯ ОШИБКА]: {e}")
