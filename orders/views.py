@@ -1,12 +1,14 @@
 import requests
 from urllib.parse import urlunparse
 import threading
+from requests.adapters import HTTPAdapter
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.conf import settings
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from catalog.cart import Cart
+
 
 def send_telegram_notification(order, receipt_items):
     """Абсолютно защищенная от багов версия отправки в Telegram"""
@@ -57,10 +59,23 @@ def send_telegram_notification(order, receipt_items):
     }
 
     try:
-        response = requests.post(url, json=payload, timeout=5)
+        import ssl
+        from urllib3.util import create_urllib3_context
+
+        # Создаем современный, строгий TLS-контекст, который требует Telegram
+        ctx = create_urllib3_context()
+        ctx.load_default_certs()
+
+        # Передаем этот контекст в сессию requests
+        session = requests.Session()
+        session.mount("https://", HTTPAdapter(ssl_context=ctx))
+
+        response = session.post(url, json=payload, timeout=5)
         print(f"Ответ Telegram API: {response.status_code}")
     except Exception as e:
         print(f"Ошибка отправки в Telegram: {e}")
+
+
 def order_create(request):
     cart = Cart(request)
     if request.method == 'POST':
@@ -87,13 +102,20 @@ def order_create(request):
 
             # Создаем одну общую фоновую задачу для всех уведомлений
             def run_notifications_bg(ord_obj, items_obj):
-                # 1. Отправляем Телеграм
+                # 1. Отправляем почту из нашего нового файла emails.py
+                try:
+                    from .emails import send_email_notification
+                    send_email_notification(ord_obj, items_obj)
+                except Exception as ex:
+                    print(f"Ошибка фоновой почты: {ex}")
+
+                # 2. Затем отправляем Телеграм
                 try:
                     send_telegram_notification(ord_obj, items_obj)
                 except Exception as ex:
                     print(f"Ошибка фонового ТГ: {ex}")
 
-            # Запускаем поток БЕЗ daemon=True, чтобы Gunicorn дал ему завершиться
+            # Запускаем поток БЕЗ daemon=True
             threading.Thread(
                 target=run_notifications_bg,
                 args=(order, receipt_items)
