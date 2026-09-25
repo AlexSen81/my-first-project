@@ -37,7 +37,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1, verbose_name="Количество")
 
     def __str__(self):
-        return f'Товар {self.product.title} для заказа № {self.order.id}'
+        return f'Товар {self.product.name} для заказа № {self.order.id}'
 
     def get_cost(self):
         return self.price * self.quantity
