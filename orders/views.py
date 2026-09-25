@@ -111,7 +111,7 @@ def order_create(request):
                 "SuccessURL": f"https://ya-studio.shop{order.id}/",
                 "FailURL": "https://ya-studio.shop",
                 "Receipt": {
-                    "Email": "info@yasenstudio.ru",
+                    "Email": "info@ya-studio.shop",
                     "Phone": order.phone,
                     "Taxation": "usn_income",
                     "Items": receipt_items
@@ -127,7 +127,7 @@ def order_create(request):
                     json=payload,
                     headers=headers,
                     timeout=5,
-                    verify=False
+                    verify=True
                 )
 
                 if response.status_code == 200 and 'application/json' in response.headers.get('Content-Type', ''):
