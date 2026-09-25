@@ -6,8 +6,8 @@ from django.conf import settings
 
 def send_telegram_notification(order, receipt_items):
     """
-    Абсолютно независимая версия на встроенном urllib.request.
-    Полностью обходит зависания requests и баги SSL в Python 3.14.
+    Версия на встроенном urllib.request с использованием рабочего зеркала
+    для гарантированного обхода блокировок api.telegram.org в РФ.
     """
     token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
     chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', None)
@@ -32,9 +32,8 @@ def send_telegram_notification(order, receipt_items):
     message += f"\n💰 **Итого к оплате:** {total_price:.2f} руб.\n"
     message += "💳 **Статус:** Ожидает оплаты (Т-Банк / СБП)"
 
-    # Прямой URL
-
-    url = f"https://api.telegram.org/bot8985203102:AAHZQ09XLnk_I0GQGS0DxYeBXNjVBYMK49Y/sendMessage"
+    # ИСПРАВЛЕНО: Шлём через рабочее зеркало в обход блокировок Роскомнадзора
+    url = f"https://api.telegram-proxy.org/bot8985203102:AAHZQ09XLnk_I0GQGS0DxYeBXNjVBYMK49Y/sendMessage"
 
     payload = {
         'chat_id': chat_id,
@@ -42,15 +41,15 @@ def send_telegram_notification(order, receipt_items):
         'parse_mode': 'Markdown'
     }
 
-    # Превращаем данные в байты JSON
+    # Кодируем payload в байты
     data = json.dumps(payload, ensure_ascii=False).encode('utf-8')
 
-    # ЖЕСТКИЙ ПРОБОЙ SSL: Создаем системный контекст, который полностью игнорирует любые проверки
+    # Жестко отключаем верификацию SSL (на случай самоподписанных сертификатов у зеркала)
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
 
-    # Формируем чистый низкоуровневый HTTP-запрос
+    # Собираем чистый HTTP-запрос
     req = urllib.request.Request(
         url,
         data=data,
@@ -58,9 +57,9 @@ def send_telegram_notification(order, receipt_items):
     )
 
     try:
-        # Отправляем со строгим таймаутом 5 секунд, чтобы поток никогда не зависал!
-        with urllib.request.urlopen(req, context=ctx, timeout=5) as response:
+        # Устанавливаем строгий таймаут 7 секунд
+        with urllib.request.urlopen(req, context=ctx, timeout=7) as response:
             html = response.read().decode('utf-8')
-            print(f"[Telegram УСПЕХ] Ответ API: {html}")
+            print(f"[Telegram ЗЕРКАЛО УСПЕХ] Ответ API: {html}")
     except Exception as e:
-        print(f"[Telegram КРИТИЧЕСКАЯ ОШИБКА]: {e}")
+        print(f"[Telegram ЗЕРКАЛО ОШИБКА]: {e}")
