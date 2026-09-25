@@ -6,8 +6,6 @@ from django.conf import settings
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from catalog.cart import Cart
-from orders.emails import send_email_notification
-from orders.telegram import send_telegram_notification
 
 
 
@@ -36,16 +34,19 @@ def order_create(request):
                 })
 
             # ИСПРАВЛЕННЫЙ ВАРИАНТ: Поток живет на своих изолированных переменных!
+            # ИДЕАЛЬНЫЙ ВАРИАНТ: Импорты внутри через относительный путь папки orders
             def run_notifications_bg(ord_obj, items_obj):
                 # 1. Отправляем почту
                 try:
-                    send_email_notification(ord_obj, items_obj)  # ИСПРАВЛЕНО С order НА ord_obj
+                    from .emails import send_email_notification
+                    send_email_notification(ord_obj, items_obj)
                 except Exception as ex:
                     print(f"Ошибка отправки почты: {ex}")
 
                 # 2. Отправляем Telegram
                 try:
-                    send_telegram_notification(ord_obj, items_obj)  # ИСПРАВЛЕНО С order НА ord_obj
+                    from .telegram import send_telegram_notification
+                    send_telegram_notification(ord_obj, items_obj)
                 except Exception as ex:
                     print(f"Ошибка вызова модуля telegram.py: {ex}")
 
