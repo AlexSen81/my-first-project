@@ -35,17 +35,17 @@ def order_create(request):
                     "Tax": "none"
                 })
 
-            # Теперь функция выглядит супер-чисто и не упадет на импортах!
+            # ИСПРАВЛЕННЫЙ ВАРИАНТ: Поток живет на своих изолированных переменных!
             def run_notifications_bg(ord_obj, items_obj):
                 # 1. Отправляем почту
                 try:
-                    send_email_notification(order, receipt_items)
+                    send_email_notification(ord_obj, items_obj)  # ИСПРАВЛЕНО С order НА ord_obj
                 except Exception as ex:
                     print(f"Ошибка отправки почты: {ex}")
 
                 # 2. Отправляем Telegram
                 try:
-                    send_telegram_notification(order, receipt_items)
+                    send_telegram_notification(ord_obj, items_obj)  # ИСПРАВЛЕНО С order НА ord_obj
                 except Exception as ex:
                     print(f"Ошибка вызова модуля telegram.py: {ex}")
 
