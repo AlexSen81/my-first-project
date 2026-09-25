@@ -116,25 +116,25 @@ def order_create(request):
             # Создаем одну общую фоновую задачу для всех уведомлений
             def run_notifications_bg(ord_obj, items_obj):
                 # 1. Отправляем почту из нашего нового файла emails.py
-                # Отправляем уведомления последовательно в основном потоке (работает мгновенно)
-                # 1. Сначала отправляем почту
                 try:
                     from .emails import send_email_notification
-                    send_email_notification(order, receipt_items)
+                    send_email_notification(ord_obj, items_obj)
                 except Exception as ex:
-                    print(f"Ошибка отправки почты: {ex}")
+                    print(f"Ошибка фоновой почты: {ex}")
 
-                # 2. Затем отправляем Телеграм (наш бронебойный системный curl)
+                # 2. Затем отправляем Телеграм
                 try:
-                    send_telegram_notification(order, receipt_items)
+                    send_telegram_notification(ord_obj, items_obj)
                 except Exception as ex:
-                    print(f"Ошибка отправки ТГ: {ex}")
+                    print(f"Ошибка фонового ТГ: {ex}")
 
-                # Очищаем корзину и переходим к оплате
-                cart.clear()
+            # Запускаем поток БЕЗ daemon=True
+            threading.Thread(
+                target=run_notifications_bg,
+                args=(order, receipt_items)
+            ).start()
 
-                # Возвращаем очистку корзины на место
-
+            # Возвращаем очистку корзины на место
             cart.clear()
 
             headers = {'Content-Type': 'application/json'}
