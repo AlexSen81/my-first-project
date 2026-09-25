@@ -61,18 +61,32 @@ def send_telegram_notification(order, receipt_items):
     try:
         import subprocess
         import json
+        import tempfile
+        import os
 
-        # Формируем чистый JSON-текст
-        payload_json = json.dumps(payload)
+        # Создаем временный файл в памяти сервера, который сам удалится
+        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json', encoding='utf-8') as tf:
+            json.dump(payload, tf, ensure_ascii=False)
+            temp_file_path = tf.name
 
-        # Собираем монолитную строку для консоли Linux
-        curl_command = f"curl -s -X POST {url} -H 'Content-Type: application/json' -d '{payload_json}'"
+        # Команда curl читает данные напрямую из файла через символ @
+        # Это защищает сообщение от любых багов с кавычками и переносами строк!
+        command = [
+            'curl', '-s', '-X', 'POST', url,
+            '-H', 'Content-Type: application/json',
+            '-d', f'@{temp_file_path}'
+        ]
 
-        # Выполняем строго через системную оболочку shell=True
-        result = subprocess.run(curl_command, shell=True, capture_output=True, text=True, timeout=5)
+        # Выполняем команду БЕЗ опасного shell=True как чистый изолированный процесс
+        result = subprocess.run(command, capture_output=True, text=True, timeout=5)
         print(f"Ответ системного curl: {result.stdout}")
+
+        # Удаляем временный файл после отправки
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
     except Exception as e:
-        print(f"Ошибка отправки через curl в Telegram: {e}")
+        print(f"Ошибка отправки через curl-файл в Telegram: {e}")
 
 
 def order_create(request):
