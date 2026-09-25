@@ -6,6 +6,9 @@ from django.conf import settings
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from catalog.cart import Cart
+from orders.emails import send_email_notification
+from orders.telegram import send_telegram_notification
+
 
 
 def order_create(request):
@@ -32,18 +35,16 @@ def order_create(request):
                     "Tax": "none"
                 })
 
-            # ТВОЯ ФОНОВАЯ ФУНКЦИЯ: Переменные почты сохранены для стабильности!
+            # Теперь функция выглядит супер-чисто и не упадет на импортах!
             def run_notifications_bg(ord_obj, items_obj):
-                # 1. Отправляем почту (СТРОГО ТВОЙ РАБОЧИЙ ВАРИАНТ)
+                # 1. Отправляем почту
                 try:
-                    from .emails import send_email_notification
                     send_email_notification(order, receipt_items)
                 except Exception as ex:
                     print(f"Ошибка отправки почты: {ex}")
 
-                # 2. НАШ НОВЫЙ ТОЧЕЧНЫЙ ВЫЗОВ ТЕЛЕГРАМА (Использует те же рабочие переменные)
+                # 2. Отправляем Telegram
                 try:
-                    from .telegram import send_telegram_notification
                     send_telegram_notification(order, receipt_items)
                 except Exception as ex:
                     print(f"Ошибка вызова модуля telegram.py: {ex}")
