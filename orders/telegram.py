@@ -49,7 +49,7 @@ def send_telegram_notification(order, receipt_items):
 
         # Системный curl гарантированно обходит баг SSL рукопожатия Python 3.14
         command = [
-            'curl', '-s', '-X', 'POST', url,
+            'curl', '-i', '-X', 'POST', url,
             '-H', 'Content-Type: application/json',
             '-d', f'@{temp_file_path}'
         ]
