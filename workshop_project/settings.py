@@ -1,7 +1,18 @@
+import os
 from pathlib import Path
+import environ
 
-# Главные пути проекта
+# Инициализируем environ
+env = environ.Env()
+
+# Главный путь проекта (оставляем один раз)
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Указываем Django читать переменные из файла .env в корне проекта
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# Главные пути проекта (комментарий из вашей 15-й строки)
+# ... далее идет остальной ваш код ...
 
 # Секретный ключ (остается твоим стандартным)
 SECRET_KEY = 'django-insecure-4ju(@-rs*@4hfb1fp1=-&vol+4sdx1*xsll78_alfzm5)+y@ge'
