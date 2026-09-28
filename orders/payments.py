@@ -35,7 +35,7 @@ def init_payment(order, total_amount_kopecks, receipt_items):
 
     try:
         url = f"{settings.TINKOFF_API_URL.rstrip('/')}/Init"
-        response = requests.post(url, json=payload, headers=headers, timeout=7)
+        response = requests.post(url, json=payload, headers=headers, timeout=7,verify=False)
 
         if response.status_code == 200 and 'application/json' in response.headers.get('Content-Type', ''):
             response_data = response.json()
