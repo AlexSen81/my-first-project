@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'workshop_project.wsgi:application'
+WSGI_APPLICATION = 'workshop_project.wsgi.application'
 
 # Подключение базы данных SQLite
 DATABASES = {
@@ -100,10 +100,13 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# НАСТРОЙКИ ИНТЕРНЕТ-ЭКВАЙРИНГА Т-БАНКА (ТЕСТОВЫЙ РЕЖИМ)
-TINKOFF_TERMINAL_KEY = 'TinkoffBankTest'
-TINKOFF_SECRET_KEY = 'TinkoffBankTestSecret'
-TINKOFF_API_URL = 'https://tinkoff.ru'
+# Настройки Т-Банка
+TINKOFF_TERMINAL_KEY = env('TBANK_TERMINAL_KEY')
+TINKOFF_SECRET_KEY = env('TBANK_SECRET_KEY')
+
+# Реальный адрес шлюза Т-Банка v2 (с пробелами, чтобы ничего не обрезалось!)
+TINKOFF_API_URL = 'https://securepay.tinkoff.ru/v2'
+
 # НАСТРОЙКИ TELEGRAM УВЕДОМЛЕНИЙ
 TELEGRAM_BOT_TOKEN = '8985203102:AAHZQ09XLnk_I0GQGS0DxYeBXNjVBYMK49Y'
 TELEGRAM_CHAT_ID = '964789318'
