@@ -21,8 +21,8 @@ def init_payment(order, total_amount_kopecks, receipt_items):
         "Amount": total_amount_kopecks,
         "OrderId": f"YEN-{order.id}",
         "Description": f"Оплата заказа №{order.id} в ЯсеньStudio",
-        "SuccessURL": f"https://ya-studio.shop{order.id}/",
-        "FailURL": "https://ya-studio.shop",
+        "SuccessURL": f"https://ya-studio.shop/orders/payment/success/{order.id}/",
+        "FailURL": "https://ya-studio.shop/orders/payment/fail/",
         "Receipt": {
             "Email": "info@ya-studio.shop",
             "Phone": order.phone,
