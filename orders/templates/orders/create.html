@@ -56,17 +56,41 @@
 
     </div>
 
-    <!-- Подключаем скрипты маски телефона +7 -->
-    <script src="https://jquery.com"></script>
-    <script src="https://cloudflare.com"></script>
+        <!-- Бронебойная маска телефона +7 на чистом JavaScript -->
     <script>
-        $(document).ready(function(){
-            $('.phone-mask-input').inputmask({
-                mask: "+7 (999) 999-99-99",
-                clearIncomplete: true,
-                showMaskOnHover: false,
-                showMaskOnFocus: true
+        document.addEventListener('DOMContentLoaded', function () {
+            const phoneInput = document.querySelector('.phone-mask-input');
+
+            if (!phoneInput) return;
+
+            // При фокусе на поле автоматически подставляем +7, если оно пустое
+            phoneInput.addEventListener('focus', function () {
+                if (!phoneInput.value) {
+                    phoneInput.value = '+7 ';
+                }
+            });
+
+            phoneInput.addEventListener('input', function (e) {
+                let matrix = '+7 (___) ___-__-__',
+                    i = 0,
+                    def = matrix.replace(/\D/g, ""),
+                    val = phoneInput.value.replace(/\D/g, "");
+
+                // Если пользователь пытается стереть семерку, возвращаем базовую +7
+                if (def.length >= val.length) val = def;
+
+                phoneInput.value = matrix.replace(/./g, function (a) {
+                    return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+                });
+            });
+
+            // Защита: не даем отправить форму, если номер заполнен не полностью (длина должна быть 18 символов с пробелами и скобками)
+            phoneInput.addEventListener('blur', function () {
+                if (phoneInput.value.length < 18) {
+                    phoneInput.value = ''; // Очищаем кривой номер
+                }
             });
         });
     </script>
+
 {% endblock %}
