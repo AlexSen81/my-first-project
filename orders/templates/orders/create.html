@@ -6,20 +6,28 @@
     <h2 style="color: #3e2723; font-size: 32px; font-weight: 700; margin-bottom: 25px;">Оформление заказа</h2>
 
     <div style="display: flex; gap: 40px; flex-wrap: wrap;">
-        
+
         <!-- Левая колонка: Форма -->
         <div style="flex: 1.2; min-width: 300px; background-color: #ffffff; padding: 30px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eae6e1;">
             <h3 style="color: #3e2723; font-size: 20px; font-weight: 700; margin-bottom: 20px;">Ваши данные</h3>
-            
+
             <form action="." method="post" novalidate>
                 {% csrf_token %}
-                
-                <label style="display: block; font-weight: 600; color: #5d4037; margin-bottom: 8px;">Ваше имя:</label>
+
+                <label style="display: block; font-weight: 600; color: #5d4037; margin-bottom: 8px;">Ваше имя, фамилия и отчество полностью (для ПВЗ):</label>
                 {{ form.first_name }}
-                
+
                 <label style="display: block; font-weight: 600; color: #5d4037; margin-bottom: 8px;">Номер телефона (для СБП):</label>
                 {{ form.phone }}
-                
+
+                <!-- Юридический блок: Обязательная галочка ФЗ-152 -->
+                <div style="margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;">
+                    {{ form.agree_to_terms }}
+                    <label for="{{ form.agree_to_terms.id_for_label }}" style="font-size: 14px; color: #5d4037; cursor: pointer; user-select: none; line-height: 1.3;">
+                        Я согласен на <a href="/privacy/" target="_blank" style="text-decoration: underline; color: #3e2723; font-weight: 600;">обработку персональных данных</a> (ФЗ-152)
+                    </label>
+                </div>
+
                 <button type="submit" style="width: 100%; background-color: #3e2723; color: white; border: none; padding: 14px; border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.3s;">
                     Перейти к оплате по СБП
                 </button>
@@ -39,7 +47,7 @@
                     {% endfor %}
                 </ul>
             </div>
-            
+
             <div style="border-top: 2px solid #3e2723; padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 18px; font-weight: 700; color: #3e2723;">Итого к оплате:</span>
                 <span style="font-size: 22px; font-weight: 700; color: #5d4037;">{{ cart.get_total_price }} руб.</span>
@@ -47,4 +55,18 @@
         </div>
 
     </div>
+
+    <!-- Подключаем скрипты маски телефона +7 -->
+    <script src="https://jquery.com"></script>
+    <script src="https://cloudflare.com"></script>
+    <script>
+        $(document).ready(function(){
+            $('.phone-mask-input').inputmask({
+                mask: "+7 (999) 999-99-99",
+                clearIncomplete: true,
+                showMaskOnHover: false,
+                showMaskOnFocus: true
+            });
+        });
+    </script>
 {% endblock %}
