@@ -49,3 +49,4 @@ def init_payment(order, total_amount_kopecks, receipt_items):
         print(f"Сбой вызова API Т-Банка: {e}")
 
     return None
+#поехали
