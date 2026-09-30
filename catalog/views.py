@@ -16,23 +16,26 @@ def contacts(request):
     return render(request, 'catalog/contacts.html')
 
 
-# ИСПРАВЛЕННЫЙ КАТАЛОГ С УМНОЙ ФИЛЬТРАЦИЕЙ ПО КАТЕГОРИЯМ
+# ИСПРАВЛЕННЫЙ КАТАЛОГ: РАЗДЕЛЕНИЕ НА ПОДПАПКИ И ТОВАРЫ
 def catalog_view(request):
     category_slug = request.GET.get('category')
 
     if category_slug:
-        # Если кликнули по категории (например, decor), фильтруем товары
-        category = get_object_or_404(Category, slug=category_slug)
+        # Если кликнули по конкретной подпапке (например, кухни), фильтруем и показываем товары
+        category = get_object_or_404(Category, slug=category_slug, is_active=True)
         products = Product.objects.filter(category=category, is_active=True)
+        show_subfolders = False  # Скрываем подпапки, так как мы уже внутри одной из них
     else:
-        # Иначе показываем все товары мастерской
-        products = Product.objects.filter(is_active=True)
+        # ИНАЧЕ (первый заход в каталог): товары не выводим, включаем режим отображения корневых подпапок
+        products = Product.objects.none()
         category = None
+        show_subfolders = True  # Сигнал для шаблона отобразить только плитки категорий
 
     context = {
         'products': products,
         'selected_category': category,
-        # В меню каталога выводим тоже строго АКТИВНЫЕ категории
+        'show_subfolders': show_subfolders,  # Передаем этот флаг в HTML шаблон
+        # В меню каталога и для плиток выводим строго АКТИВНЫЕ сезонные категории
         'categories': Category.objects.filter(is_active=True)
     }
     return render(request, 'catalog/catalog.html', context)
