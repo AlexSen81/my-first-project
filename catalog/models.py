@@ -7,6 +7,8 @@ class Category(models.Model):
     image = models.ImageField(upload_to='category_pics/', verbose_name="Обложка категории (для главной)", blank=True, null=True)
     description = models.TextField(verbose_name="Описание для главного баннера", blank=True, null=True,
                                    help_text="Расскажите покупателю об особенностях этой категории товаров на главной странице")
+    # ВОТ ЭТУ СТРОЧКУ ДОБАВЛЯЕМ СЮДА НАВЕРХ:
+    is_active = models.BooleanField(default=True, verbose_name="Отображать на сайте")
 
     class Meta:
         verbose_name = "Категория"
