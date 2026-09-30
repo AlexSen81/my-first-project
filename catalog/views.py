@@ -5,10 +5,10 @@ from .cart import Cart
 from .forms import CartAddProductForm  # Твоя форма количества
 
 
-# ОБНОВЛЕННАЯ ФУНКЦИЯ ГЛАВНОЙ СТРАНИЦЫ
+# ОБНОВЛЕННАЯ ФУНКЦИЯ ГЛАВНОЙ СТРАНИЦЫ С УМНОЙ СЕЗОННОЙ ФИЛЬТРАЦИЕЙ
 def index(request):
-    # Достаем все категории, чтобы вывести их в виде баннеров
-    categories = Category.objects.all()
+    # Достаем только АКТИВНЫЕ категории, чтобы скрыть несезонные баннеры (например, Елочные игрушки)
+    categories = Category.objects.filter(is_active=True)
     return render(request, 'catalog/index.html', {'categories': categories})
 
 
@@ -32,7 +32,8 @@ def catalog_view(request):
     context = {
         'products': products,
         'selected_category': category,
-        'categories': Category.objects.all()
+        # В меню каталога выводим тоже строго АКТИВНЫЕ категории
+        'categories': Category.objects.filter(is_active=True)
     }
     return render(request, 'catalog/catalog.html', context)
 
