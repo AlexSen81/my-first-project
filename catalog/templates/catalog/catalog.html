@@ -19,35 +19,39 @@
         </p>
     </div>
 
-    <!-- РЕЖИМ 1: ОТОБРАЖЕНИЕ КОРНЕВЫХ КАТЕГОРИЙ (ПОДПАПОК) -->
+       <!-- РЕЖИМ 1: ОТОБРАЖЕНИЕ КОРНЕВЫХ КАТЕГОРИЙ (ПОДПАПОК) -->
     {% if show_subfolders %}
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px;">
+        <div style="display: flex; flex-direction: column; gap: 40px; margin-bottom: 40px;">
             {% for category in categories %}
-                <div class="category-card" style="background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <!-- Горизонтальный интерактивный баннер секции -->
+                <div class="category-card" style="background-color: #FFFFFF; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: row; min-height: 380px; transition: transform 0.3s ease, box-shadow 0.3s ease; flex-wrap: wrap;">
 
-                    <!-- Область предпросмотра категории (Ведет внутрь категории) -->
-                    <a href="{% url 'catalog' %}?category={{ category.slug }}" style="display: block; height: 240px; background-color: #F2EDE6; overflow: hidden; position: relative; text-decoration: none;">
+                    <!-- Левая текстовая часть баннера -->
+                    <div style="padding: 40px; flex: 1; min-width: 300px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #8D8781; font-weight: 600; margin-bottom: 12px;">Раздел каталога</span>
+                        <h3 style="font-size: 28px; font-weight: 500; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; color: #1A1A1A;">
+                            {{ category.name }}
+                        </h3>
+                        <p style="font-size: 14px; color: #666; font-weight: 300; line-height: 1.6; margin-bottom: 30px; max-width: 450px;">
+                            Эксклюзивные авторские изделия из ценных пород дерева, подчеркивающие природную текстуру и создающие уютную атмосферу в вашем доме.
+                        </p>
+                        <a href="{% url 'catalog' %}?category={{ category.slug }}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 14px 35px; border-radius: 25px; font-size: 13px; font-weight: 500; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#333333'" onmouseout="this.style.backgroundColor='#1A1A1A'">
+                            Посмотреть изделия раздела →
+                        </a>
+                    </div>
+
+                    <!-- Правая графическая часть баннера (Фото без грубой обрезки) -->
+                    <a href="{% url 'catalog' %}?category={{ category.slug }}" style="flex: 1; min-width: 300px; max-height: 400px; background-color: #F9F6F2; overflow: hidden; display: block; position: relative;">
                         {% if category.image %}
-                            <!-- Если у вас в модели Category настроено поле image -->
-                            <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width: 100%; height: 100%; object-fit: cover; display: block; object-position: center;">
                         {% else %}
-                            <!-- Симпатичная универсальная заглушка с текстурой и иконкой дерева -->
-                            <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8D8781; background: linear-gradient(135deg, #F2EDE6 0%, #E6DFD5 100%);">
-                                <span style="font-size: 48px; margin-bottom: 10px;">🪵</span>
+                            <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8D8781; background: linear-gradient(135deg, #F2EDE6 0%, #E6DFD5 100%); min-height: 300px;">
+                                <span style="font-size: 54px; margin-bottom: 10px;">🪵</span>
                                 <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; color: #A09B95;">Ясень-Studio</span>
                             </div>
                         {% endif %}
                     </a>
 
-                    <!-- Текстовое описание папки -->
-                    <div style="padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <h3 style="font-size: 20px; font-weight: 500; margin-bottom: 15px; font-family: 'Montserrat', sans-serif; color: #1A1A1A;">
-                            {{ category.name }}
-                        </h3>
-                        <a href="{% url 'catalog' %}?category={{ category.slug }}" style="display: inline-block; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 28px; border-radius: 20px; font-size: 13px; font-weight: 500; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                            Перейти в раздел
-                        </a>
-                    </div>
                 </div>
             {% endfor %}
         </div>
