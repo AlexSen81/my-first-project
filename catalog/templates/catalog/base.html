@@ -1,236 +1,28 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ЯсеньStudio | Авторская мебель из массива дерева{% endblock %}</title>
-
-    <!-- Подключаем шрифт Montserrat -->
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Подключаем Font Awesome для иконок мессенджеров -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-
-    <!-- Подключаем шрифт Golos Text из Google Fonts -->
-    <link href="https://googleapis.com" rel="stylesheet">
-
-
-
-
-    <style>
-        /* Global Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Candara Light', sans-serif;
-            background-color: #F7F4F0;
-            color: #1A1A1A;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
-        /* Просторная минималистичная шапка */
-        header {
-            background-color: #F7F4F0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-        }
-
-        /* ЮВЕЛИРНАЯ НАСТРОЙКА РАМКИ ЛОГОТИПА */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            width: 250px;
-            height: 90px;
-            overflow: hidden;
-            position: relative;
-        }
-        .logo-img {
-            width: 340px;
-            height: 340px;
-            object-fit: contain;
-            position: absolute;
-            left: -45px;
-            top: -125px;
-            mix-blend-mode: darken;
-            filter: contrast(1.05) brightness(0.95);
-        }
-
-        /* Единое меню навигации в строгом премиум стиле */
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 35px;
-        }
-        nav a {
-            color: #1A1A1A;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            opacity: 0.6;
-            position: relative;
-            padding-bottom: 4px;
-            transition: opacity 0.3s;
-        }
-        nav a:hover {
-            opacity: 1;
-        }
-        nav a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            transform: scaleX(0);
-            height: 1px;
-            bottom: 0;
-            left: 0;
-            background-color: #1A1A1A;
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
-        }
-        nav a:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        /* Главный контейнер */
-        main {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 40px 20px;
-            flex: 1;
-        }
-
-        /* Элегантный чистый подвал */
-        footer {
-            background-color: #F2EDE6;
-            padding: 40px 20px;
-            font-size: 13px;
-            color: #7A7570;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            margin-top: auto;
-        }
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-                padding: 15px 20px;
-            }
-            .logo-container {
-                margin: 0 auto;
-            }
-            nav {
-                gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            nav a {
-                font-size: 12px;
-            }
-        }
-            nav a {
-        font-size: 12px;
-    }
-
-        /* Применяем шрифт Golos Text, настраиваем размеры и идеальную четкость */
-    h1, h2, h3, h4, h5, h6, p, a, span, div, button, input, textarea {
-        font-family: 'Golos Text', 'Segoe UI', sans-serif !important;
-    }
-
-    /* Делаем обычный текст и меню крупнее, но изящнее */
-    p, a, span, div {
-        font-weight: 400 !important; /* Умеренная толщина для читабельности */
-        font-size: 104% !important;
-    }
-
-    /* Заголовки оставляем более плотными и четкими */
-    h1, h2, h3, h4 {
-        font-weight: 500 !important;
-    }
-}
-</style>
-
-</head>
-<body>
-
-    <header>
-        <div class="nav-container">
-            <!-- Доминантный логотип ЯсеньStudio -->
-            <a class="logo-container" href="{% url 'index' %}">
-                <img src="/media/products_pics/PHOTO-2022-04-21-12-40-19.jpg" alt="ЯсеньStudio" class="logo-img">
-            </a>
-
-            <!-- Все вкладки приведены к единому монолитному стилю -->
-            <nav>
-                <a href="{% url 'index' %}">Главная</a>
-                <a href="{% url 'catalog' %}">Каталог</a>
-                <a href="{% url 'delivery' %}">Доставка</a>
-                <a href="{% url 'contacts' %}">Контакты</a>
-                <a href="{% url 'cart_detail' %}">Корзина</a>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-
+    <!-- ИСПРАВЛЕННЫЙ ПРЕМИАЛЬНЫЙ ЮРИДИЧЕСКИЙ ФУТЕР БЕЗ ЗАПРЕЩЕННЫХ РЕСУРСОВ -->
     <footer>
         <div class="footer-container">
-            <p>&copy; 2026 ЯсеньStudio. Мебель вне времени для вашей жизни.</p>
-            <div style="display: flex; gap: 15px;">
-                <a href="https://t.me" target="_blank" style="color: #7A7570; text-decoration: none;"><i class="fa-brands fa-telegram"></i></a>
-                <a href="https://wa.me" target="_blank" style="color: #7A7570; text-decoration: none;"><i class="fa-brands fa-whatsapp"></i></a>
+            <!-- Левая колонка: Юридический блок бренда -->
+            <div style="flex: 1.5; min-width: 280px; display: flex; flex-direction: column; gap: 8px;">
+                <p style="font-weight: 500 !important; color: #1A1A1A; margin-bottom: 4px;">&copy; 2026 ЯсеньStudio. Авторские изделия из дерева.</p>
+                <p style="font-size: 13px !important; color: #8A8580; margin: 0; line-height: 1.4;">Индивидуальный предприниматель Хейфец Д.Г.</p>
+                <p style="font-size: 12px !important; color: #A09B95; margin: 0;">ОГРНИП: 326502400012345 (Укажите ваш реальный номер из выписки)</p>
+            </div>
+
+            <!-- Средняя колонка: Защита ФЗ-152 и документы -->
+            <div style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 10px;">
+                <span style="font-size: 11px !important; text-transform: uppercase; letter-spacing: 1px; color: #9A9590; font-weight: 600; display: block; margin-bottom: 5px;">Правовая информация</span>
+                <a href="{% url 'contacts' %}" style="color: #7A7570; text-decoration: none; font-size: 13px !important; transition: color 0.2s;" onmouseover="this.style.color='#1A1A1A'" onmouseout="this.style.color='#7A7570'">Политика конфиденциальности</a>
+                <a href="{% url 'contacts' %}" style="color: #7A7570; text-decoration: none; font-size: 13px !important; transition: color 0.2s;" onmouseover="this.style.color='#1A1A1A'" onmouseout="this.style.color='#7A7570'">Пользовательское соглашение</a>
+            </div>
+
+            <!-- Правая колонка: Легальные мессенджеры РФ -->
+            <div style="flex: 0.8; min-width: 180px; display: flex; flex-direction: column; gap: 10px;">
+                <span style="font-size: 11px !important; text-transform: uppercase; letter-spacing: 1px; color: #9A9590; font-weight: 600; display: block; margin-bottom: 5px;">Мы в сети</span>
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <!-- Опасные ссылки обернуты в пробелы от системного бага -->
+                    <a href="https://t.me" target="_blank" style="color: #7A7570; text-decoration: none; font-size: 15px !important; transition: color 0.2s;" onmouseover="this.style.color='#26A5E4'" onmouseout="this.style.color='#7A7570'">Telegram</a>
+                    <a href="https://max.ru" target="_blank" style="color: #7A7570; text-decoration: none; font-size: 15px !important; transition: color 0.2s;" onmouseover="this.style.color='#6366F1'" onmouseout="this.style.color='#7A7570'">MAX</a>
+                </div>
             </div>
         </div>
     </footer>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=113205645', 'ym');
-
-    ym(113205645, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/113205645" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-
-
-
-</body>
-</html>
