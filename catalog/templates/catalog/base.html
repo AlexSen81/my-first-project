@@ -172,6 +172,12 @@
     </style>
 </head>
 <body>
+{% if is_maintenance %}
+<div style="background-color: #ffebee; color: #c62828; text-align: center; padding: 12px 20px; font-weight: 700; font-size: 14px; border-bottom: 2px solid #ef9a9a; z-index: 9999; position: relative;">
+    ⚠️ Сайт находится в режиме технического обслуживания и наполнения каталога. Оформление заказов временно недоступно!
+</div>
+{% endif %}
+
 
     <!-- ВЕРХНЯЯ ШАПКА САЙТА (МЕНЮ) -->
     <header>

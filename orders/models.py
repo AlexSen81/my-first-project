@@ -45,3 +45,12 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+class MainSiteSettings ( models.Model ) :
+    is_maintenance_mode = models.BooleanField ( default = True , verbose_name = "Режим технического обслуживания (Включить плашку)" )
+
+    class Meta :
+        verbose_name = "Настройки сайта"
+        verbose_name_plural = "Настройки сайта"
+
+    def __str__ ( self ) :
+        return "Главные настройки ЯСЕНЬ-STUDIO"

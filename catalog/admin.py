@@ -19,3 +19,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     # Магия: вставляем галерею внутрь карточки товара!
     inlines = [ProductImageInline]
+from orders.models import MainSiteSettings
+
+admin.site.register ( MainSiteSettings )
