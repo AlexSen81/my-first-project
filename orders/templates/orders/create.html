@@ -27,6 +27,48 @@
                         Я согласен на <a href="/orders/privacy/" target="_blank" style="text-decoration: underline; color: #3e2723; font-weight: 600;">обработку персональных данных</a> (ФЗ-152)
                     </label>
                 </div>
+  <!-- Выбор премиальной и быстрой доставки через постаматы 5Post -->
+<div style = "margin-bottom: 25px; padding: 20px; background-color: #FAF8F5; border: 1px solid #E8E4DF; border-radius: 4px;" >
+    <label style = "font-weight: 700; color: #3e2723; display: flex; align-items: center; gap: 8px; cursor: pointer;" >
+        <input type = "radio" name = "delivery_method" value = "fivepost" checked style = "accent-color: #3e2723;" >
+        📦 Быстрая доставка в постамат 5Post (Пятёрочка) — от 185 ₽
+    </label>
+    <p style = "font-size: 13px; color: #5d4037; margin: 8px 0 12px 24px; line-height: 1.4;" >
+        Рекомендуется для небольших изделий (менажницы, подсвечники, доски). Заберите заказ в соседнем доме по пути за продуктами.
+    </p>
+
+    <!-- Сюда JS запишет адрес, выбранный клиентом на карте -->
+    <div id = "fivepost_address_block" style = "margin: 10px 0 10px 24px; font-weight: 700; color: #3e2723;" >
+        Адрес выдачи: <span id = "fivepost_addr_text" style = "color: #5d4037;" >Не выбран</span>
+    </div>
+
+    <!-- Скрытые поля для передачи данных в Django базу -->
+    <input type = "hidden" name = "postamat_id" id = "fivepost_id_val" >
+    <input type = "hidden" name = "postamat_address" id = "fivepost_addr_val" >
+
+    <button type = "button" id = "fivepost_btn" style = "margin-left: 24px; background-color: #3e2723; color: white; border: none; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 4px; cursor: pointer;" onclick = "openFivePostMap()" >
+        Выбрать постамат на карте
+    </button>
+</div>
+
+<!-- Официальный скрипт интерактивной карты 5Post (Тестовый сервер) -->
+<script src = "https://points-preprod.fivepost.ru/widget/js/v1/fivepost-widget.js" ></script>
+
+<script>
+function openFivePostMap() {
+    FivePostWidget.open({
+        apiKey: 'test_client_id_ya_studio_2026',
+        cms: 'Custom',
+        allowedDeliveryTypes: [ 'POSTAMAT' , 'COUNTER' ],
+        onChoose: function(point) {
+            document.getElementById('fivepost_id_val').value = point.id;
+            document.getElementById('fivepost_addr_val').value = point.address;
+            document.getElementById('fivepost_addr_text').innerText = point.address;
+        }
+    });
+}
+</script>
+
 
                 <button type="submit" style="width: 100%; background-color: #3e2723; color: white; border: none; padding: 14px; border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.3s;">
                     Перейти к оплате по СБП
