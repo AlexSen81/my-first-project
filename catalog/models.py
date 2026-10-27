@@ -26,6 +26,10 @@ class Product(models.Model):
     # Разрешаем временно создавать товар без фотографии
     image = models.ImageField(upload_to='products_pics/', verbose_name="Фото товара", blank=True, null=True)
     is_active = models.BooleanField(default=True, verbose_name="Активен (выводится на сайте)")
+    length_cm = models.PositiveIntegerField ( default = 30 , verbose_name = "Длина изделия (см)" )
+    width_cm = models.PositiveIntegerField ( default = 20 , verbose_name = "Ширина изделия (см)" )
+    height_cm = models.PositiveIntegerField ( default = 2 , verbose_name = "Высота изделия (см)" )
+
 
     class Meta:
         verbose_name = "Товар"
