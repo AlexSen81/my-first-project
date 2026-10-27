@@ -15,6 +15,10 @@ class Order(models.Model):
 
     # ID транзакции в системе Т-Банка (нужен для проверки статуса платежа)
     tinkoff_payment_id = models.CharField(max_length=100, blank=True, null=True, verbose_name="ID платежа Т-Банка")
+    postamat_id = models.CharField ( max_length = 50 , blank = True , null = True , verbose_name = "ID Постамата" )
+    postamat_address = models.TextField ( blank = True , null = True , verbose_name = "Адрес точки выдачи" )
+    fivepost_track_id = models.CharField ( max_length = 100 , blank = True , null = True , verbose_name = "Трек-номер 5Post" )
+
 
     class Meta:
         ordering = ('-created',)
