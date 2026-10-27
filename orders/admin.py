@@ -10,6 +10,3 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'first_name', 'phone', 'paid', 'created', 'updated']
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline] # Показывает товары прямо внутри заказа
-from .models import MainSiteSettings
-
-admin.site.register ( MainSiteSettings )
