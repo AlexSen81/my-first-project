@@ -53,16 +53,16 @@
     </button>
 </div>
 
-<!-- Официальный скрипт интерактивной карты 5Post (БОЕВОЙ СЕРВЕР) -->
-<script src = "https://points.fivepost.ru/widget/js/v1/fivepost-widget.js" ></script>
+<!-- Локальное подключение сохраненного скрипта карты 5Post -->
+<script src="/static/fivepost-widget.js"></script>
 
 <script>
 function openFivePostMap() {
-    // На продакшене используется объект FivePostMap
-    FivePostWidget.open.open({
+    // Вызываем объект FivePostMap, настроенный в нашем локальном скрипте
+    FivePostMap.open({
         apiKey: 'f4cda47e-ae81-42e8-b8c3-c5936403337c',
         cms: 'Custom',
-        allowedDeliveryTypes: [ 'POSTAMAT' , 'COUNTER' ],
+        allowedDeliveryTypes: ['POSTAMAT', 'COUNTER'],
         onChoose: function(point) {
             document.getElementById('fivepost_id_val').value = point.id;
             document.getElementById('fivepost_addr_val').value = point.address;
@@ -71,6 +71,7 @@ function openFivePostMap() {
     });
 }
 </script>
+
 
 
 
