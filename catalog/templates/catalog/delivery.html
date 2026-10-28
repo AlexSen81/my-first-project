@@ -1,11 +1,15 @@
+{% load static %}
 {% extends 'catalog/base.html' %}
 {% block title %}Доставка изделий | ЯсеньStudio{% endblock %}
 {% block content %}
 <div style="margin-top: 30px; margin-bottom: 80px;">
+    <!-- Заголовок страницы -->
     <div style="margin-bottom: 40px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 20px;">
         <h1 style="font-size: 32px; font-weight: 500; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">Доставка по всей России</h1>
         <p style="font-size: 14px; color: #888; font-weight: 300; margin-top: 5px;">Бережно упаковываем и отправляем наши изделия из массива в любой регион РФ</p>
     </div>
+
+    <!-- Основной блок с пояснениями -->
     <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;">
         <div style="flex: 1.5; min-width: 320px; font-size: 15px; color: #4A4A4A; line-height: 1.7; font-weight: 300;">
             <p style="margin-bottom: 20px;">Поскольку изделия из дуба, ясеня и карагача обладают внушительным весом и требуют особого отношения, мы подходим к логистике максимально ответственно. Каждое изделие перед отправкой проходит тщательную проверку и упаковывается в несколько защитных слоёв. Для крупных предметов заказывается жесткая обрешётка.</p>
@@ -19,48 +23,54 @@
             </ul>
         </div>
     </div>
+
+    <!-- БЛОК КАРТОЧЕК -->
     <h2 style="font-size: 22px; font-weight: 500; color: #1A1A1A; margin-bottom: 25px; font-family: 'Montserrat', sans-serif;">Рассчитать стоимость доставки:</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; align-items: stretch;">
+
         <!-- 5Post -->
         <div class="delivery-card" style="background-color: #FAF8F5; border-radius: 16px; padding: 30px; border: 1px solid #E8E4DF; display: flex; flex-direction: column; justify-content: space-between; min-height: 240px;">
             <div style="margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 10px;">
                     <h3 style="font-size: 20px; font-weight: 600; color: #3e2723; margin: 0; font-family: 'Montserrat', sans-serif;">5Post</h3>
-                    <img src="https://fivepost.ru" width="32" height="32" style="border-radius: 6px; object-fit: contain; flex-shrink: 0;" alt="5Post">
+                    <img src="{% static 'images/5post.jpg' %}" width="40" height="40" style="border-radius: 8px; object-fit: contain; flex-shrink: 0;" alt="5Post">
                 </div>
                 <span style="display: inline-block; background-color: #E8E4DF; color: #3e2723; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px; margin-bottom: 10px;">Для мелкого декора</span>
                 <p style="font-size: 13px; color: #5d4037; font-weight: 300; line-height: 1.6; margin: 0;">Лучший выбор для небольших изделий (менажницы, доски). Быстрая доставка в ближайший постамат или кассу «Пятёрочки».</p>
             </div>
             <a href="https://fivepost.ru" target="_blank" style="display: flex; align-items: center; justify-content: center; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: auto;">Карта пунктов 5Post</a>
         </div>
+
         <!-- СДЭК -->
         <div class="delivery-card" style="background-color: #FFFFFF; border-radius: 16px; padding: 30px; border: 1px solid rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; min-height: 240px;">
             <div style="margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px;">
                     <h3 style="font-size: 20px; font-weight: 600; color: #1A1A1A; margin: 0; font-family: 'Montserrat', sans-serif;">СДЭК</h3>
-                    <img src="https://cdek.ru" width="32" height="32" style="object-fit: contain; flex-shrink: 0;" alt="СДЭК">
+                    <img src="{% static 'images/sdek.jpg' %}" width="40" height="40" style="border-radius: 8px; object-fit: contain; flex-shrink: 0;" alt="СДЭК">
                 </div>
                 <p style="font-size: 13px; color: #666; font-weight: 300; line-height: 1.6; margin: 0;">Идеально подходит для предметов декора, менажниц и разделочных досок. Быстрая доставка до пунктов выдачи или курьером.</p>
             </div>
             <a href="https://cdek.ru" target="_blank" style="display: flex; align-items: center; justify-content: center; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: auto;">Калькулятор СДЭК</a>
         </div>
+
         <!-- Яндекс -->
         <div class="delivery-card" style="background-color: #FFFFFF; border-radius: 16px; padding: 30px; border: 1px solid rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; min-height: 240px;">
             <div style="margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px;">
                     <h3 style="font-size: 20px; font-weight: 600; color: #1A1A1A; margin: 0; font-family: 'Montserrat', sans-serif;">Яндекс Доставка</h3>
-                    <img src="https://yastatic.net" width="32" height="32" style="object-fit: contain; flex-shrink: 0;" alt="Яндекс">
+                    <img src="{% static 'images/yandex.jpg' %}" width="40" height="40" style="border-radius: 8px; object-fit: contain; flex-shrink: 0;" alt="Яндекс">
                 </div>
                 <p style="font-size: 13px; color: #666; font-weight: 300; line-height: 1.6; margin: 0;">Отличный выбор для междугородней отправки средних посылок, а также для экспресс-доставки по городу.</p>
             </div>
             <a href="https://yandex.ru" target="_blank" style="display: flex; align-items: center; justify-content: center; background-color: #1A1A1A; color: #FFFFFF; text-decoration: none; padding: 12px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: auto;">Калькулятор Яндекс</a>
         </div>
+
         <!-- Почта -->
         <div class="delivery-card" style="background-color: #FFFFFF; border-radius: 16px; padding: 30px; border: 1px solid rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; min-height: 240px;">
             <div style="margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px;">
                     <h3 style="font-size: 20px; font-weight: 600; color: #1A1A1A; margin: 0; font-family: 'Montserrat', sans-serif;">Почта России</h3>
-                    <img src="https://pochta.ru" width="32" height="32" style="object-fit: contain; flex-shrink: 0;" alt="Почта">
+                    <img src="{% static 'images/pochta.jpg' %}" width="40" height="40" style="border-radius: 8px; object-fit: contain; flex-shrink: 0;" alt="Почта">
                 </div>
                 <p style="font-size: 13px; color: #666; font-weight: 300; line-height: 1.6; margin: 0;">Доставка отправлений в самые отдалённые уголки страны, куда не доезжают другие коммерческие ТК.</p>
             </div>
@@ -68,6 +78,7 @@
         </div>
     </div>
 </div>
+
 <style>
     .delivery-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .delivery-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.05) !important; }
