@@ -53,11 +53,12 @@
     </button>
 </div>
 
-<!-- Прямая интеграция скрипта карты 5Post без внешних файлов статики -->
-<script>
-(function () {
-    var e = "//points.fivepost.ru/widget";
+<<script>
+// Код выполнится только тогда, когда браузер полностью построит страницу и body
+document.addEventListener('DOMContentLoaded', function() {
+    var e = "https://points.fivepost.ru/widget";
     var t = "fivepost-widget-iframe";
+
     window.FivePostMap = {
         open: function (n) {
             if (!n || !n.apiKey) return;
@@ -68,6 +69,7 @@
             r.src = e + "/index.html?apiKey=" + encodeURIComponent(n.apiKey) + "&cms=" + encodeURIComponent(n.cms || "Custom") + "&allowedDeliveryTypes=" + encodeURIComponent((n.allowedDeliveryTypes || ["POSTAMAT", "COUNTER"]).join(","));
             r.style.position = "fixed"; r.style.top = "0"; r.style.left = "0"; r.style.width = "100%"; r.style.height = "100%"; r.style.zIndex = "999999"; r.style.border = "none";
             document.body.appendChild(r);
+
             window.addEventListener("message", function (e) {
                 if (e.data && e.data.source === "fivepost-widget") {
                     if (e.data.action === "choose" && typeof n.onChoose === "function") n.onChoose(e.data.point);
@@ -76,9 +78,13 @@
             });
         }
     };
-})();
+});
 
 function openFivePostMap() {
+    if (typeof FivePostMap === 'undefined') {
+        alert('Система инициализирует карту, пожалуйста, подождите секунду.');
+        return;
+    }
     FivePostMap.open({
         apiKey: 'f4cda47e-ae81-42e8-b8c3-c5936403337c',
         cms: 'Custom',
