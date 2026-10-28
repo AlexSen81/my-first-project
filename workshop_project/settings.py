@@ -123,8 +123,8 @@ EMAIL_HOST_USER = 'info@ya-studio.shop'        # Твой почтовый ящ�
 EMAIL_HOST_PASSWORD = 'Kexbibqgfhjkm2026!!'   # Пароль от почты info@ya-studio.shop
 DEFAULT_FROM_EMAIL = 'info@ya-studio.shop'     # Адрес, от имени которого будут уходить письма
 # Настройки интеграции с 5Post (ЯСЕНЬ-STUDIO)
-FIVEPOST_CLIENT_ID = 'test_client_id_ya_studio_2026'
-FIVEPOST_CLIENT_SECRET = 'test_client_secret_super_secret_key'
-FIVEPOST_SANDBOX = True  # Режим тестирования активен, пока юристы проверяют анкету
+FIVEPOST_CLIENT_ID = 'f4cda47e-ae81-42e8-b8c3-c5936403337c'
+#FIVEPOST_CLIENT_SECRET = 'test_client_secret_super_secret_key'
+FIVEPOST_SANDBOX = False  # Режим тестирования активен, пока юристы проверяют анкету
 
 
